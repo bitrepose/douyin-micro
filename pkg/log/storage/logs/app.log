@@ -1,0 +1,49 @@
+{"level":"local.info","ts":"[2022-05-21 13:40:50.305]","caller":"log/log.go:30","msg":"log init success!"}
+{"level":"local.info","ts":"[2022-05-21 13:40:50.306]","caller":"log/zapImpl.go:169","msg":"[LevelNotice test]"}
+{"level":"local.info","ts":"[2022-05-21 13:40:50.306]","caller":"log/zapImpl.go:169","msg":"[LevelInfo test]"}
+{"level":"local.info","ts":"[2022-05-21 13:40:50.306]","caller":"log/zapImpl.go:169","msg":"[LevelDebug Test]"}
+{"level":"local.info","ts":"[2022-05-21 13:40:50.306]","caller":"log/zapImpl.go:169","msg":"[LevelTrace test]"}
+{"level":"local.info","ts":"[2022-05-21 13:40:50.306]","caller":"log/zapImpl.go:169","msg":"[LevelError test]"}
+{"level":"local.info","ts":"[2022-05-21 13:40:50.306]","caller":"log/zapImpl.go:169","msg":"[LevelWarn test]"}
+[2022-05-21 13:42:22.040]	local.info	log/log.go:30	log init success!
+[2022-05-21 13:42:22.040]	local.info	log/zapImpl.go:169	[LevelNotice test]
+[2022-05-21 13:42:22.040]	local.info	log/zapImpl.go:169	[LevelInfo test]
+[2022-05-21 13:42:22.040]	local.info	log/zapImpl.go:169	[LevelDebug Test]
+[2022-05-21 13:42:22.040]	local.info	log/zapImpl.go:169	[LevelTrace test]
+[2022-05-21 13:42:22.040]	local.info	log/zapImpl.go:169	[LevelError test]
+[2022-05-21 13:42:22.040]	local.info	log/zapImpl.go:169	[LevelWarn test]
+[2022-05-21 13:45:13.645]	local.info	log/log.go:30	log init success!
+[2022-05-21 13:45:44.168]	local.info	log/log.go:30	log init success!
+[2022-05-21 13:51:50.789]	local.info	log/log.go:30	log init success!
+[2022-05-21 13:51:50.790]	local.info	log/zapImpl.go:169	[LevelNotice test]
+[2022-05-21 13:51:50.790]	local.info	log/zapImpl.go:169	[LevelInfo test]
+[2022-05-21 13:51:50.790]	local.info	log/zapImpl.go:169	[LevelDebug Test]
+[2022-05-21 13:51:50.790]	local.info	log/zapImpl.go:169	[LevelTrace test]
+[2022-05-21 13:51:50.790]	local.info	log/zapImpl.go:169	[LevelError test]
+[2022-05-21 13:51:50.790]	local.info	log/zapImpl.go:169	[LevelWarn test]
+[2022-05-21 13:54:02.844]	local.info	log/log.go:30	log init success!
+[2022-05-21 13:54:02.846]	local.error	log/zapImpl.go:157	[LevelNotice test]
+[2022-05-21 13:54:02.846]	local.info	log/zapImpl.go:169	[LevelNotice test]
+[2022-05-21 13:54:02.846]	local.error	log/zapImpl.go:157	[LevelInfo test]
+[2022-05-21 13:54:02.846]	local.info	log/zapImpl.go:169	[LevelInfo test]
+[2022-05-21 13:54:02.846]	local.error	log/zapImpl.go:157	[LevelDebug Test]
+[2022-05-21 13:54:02.846]	local.info	log/zapImpl.go:169	[LevelDebug Test]
+[2022-05-21 13:54:02.846]	local.error	log/zapImpl.go:157	[LevelTrace test]
+[2022-05-21 13:54:02.846]	local.info	log/zapImpl.go:169	[LevelTrace test]
+[2022-05-21 13:54:02.846]	local.error	log/zapImpl.go:157	[LevelError test]
+[2022-05-21 13:54:02.846]	local.info	log/zapImpl.go:169	[LevelError test]
+[2022-05-21 13:54:02.846]	local.error	log/zapImpl.go:157	[LevelWarn test]
+[2022-05-21 13:54:02.846]	local.info	log/zapImpl.go:169	[LevelWarn test]
+[2022-05-21 13:55:48.677]	local.info	log/log.go:30	log init success!
+[2022-05-21 13:55:48.678]	local.error	log/zapImpl.go:157	[LevelNotice test]
+[2022-05-21 13:55:48.678]	local.info	log/zapImpl.go:169	[LevelNotice test]
+[2022-05-21 13:55:48.678]	local.error	log/zapImpl.go:157	[LevelInfo test]
+[2022-05-21 13:55:48.678]	local.info	log/zapImpl.go:169	[LevelInfo test]
+[2022-05-21 13:55:48.678]	local.error	log/zapImpl.go:157	[LevelDebug Test]
+[2022-05-21 13:55:48.678]	local.info	log/zapImpl.go:169	[LevelDebug Test]
+[2022-05-21 13:55:48.678]	local.error	log/zapImpl.go:157	[LevelTrace test]
+[2022-05-21 13:55:48.678]	local.info	log/zapImpl.go:169	[LevelTrace test]
+[2022-05-21 13:55:48.678]	local.error	log/zapImpl.go:157	[LevelError test]
+[2022-05-21 13:55:48.678]	local.info	log/zapImpl.go:169	[LevelError test]
+[2022-05-21 13:55:48.678]	local.error	log/zapImpl.go:157	[LevelWarn test]
+[2022-05-21 13:55:48.678]	local.info	log/zapImpl.go:169	[LevelWarn test]
