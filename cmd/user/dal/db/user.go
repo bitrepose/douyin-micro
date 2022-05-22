@@ -98,7 +98,7 @@ func DisFollow(ctx context.Context, userId int64, toUserId int64) error {
 }
 
 // FindUsersByIds 通过一组id 查询用户 返回值为用户数组
-func FindUsersByIds(ctx context.Context, ids *[]int) (*[]User, error) {
+func FindUsersByIds(ctx context.Context, ids *[]int64) (*[]User, error) {
 	var users = &[]User{}
 	result := DB.WithContext(ctx).Where(*ids).Find(users)
 	return users, result.Error
