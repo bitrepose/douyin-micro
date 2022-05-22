@@ -2,7 +2,9 @@ package main
 
 import (
 	"context"
+	"douyin-micro/cmd/video/service"
 	"douyin-micro/kitex_gen/video"
+	"douyin-micro/pkg/errno"
 )
 
 // VideoServiceImpl implements the last service interface defined in the IDL.
@@ -17,6 +19,21 @@ func (s *VideoServiceImpl) Feed(ctx context.Context, req *video.FeedRequset) (re
 // PublishAction implements the VideoServiceImpl interface.
 func (s *VideoServiceImpl) PublishAction(ctx context.Context, req *video.PublishActionRequest) (resp *video.PublishActionResponse, err error) {
 	// TODO: Your code here...
+	resp = new(video.PublishActionResponse)
+
+	if len(req.Data) == 0 || len(req.Title) == 0 {
+		resp.StatusCode = errno.ParamErrCode
+		resp.StatusMsg = &errno.ParamErr.ErrMsg
+		return resp, nil
+	}
+
+	err = service.NewPublishActionService(ctx).PublishAction(req)
+	if err != nil {
+		errMsg := err.Error()
+		resp.StatusCode = errno.ServiceErrCode
+		resp.StatusMsg = &errMsg
+		return resp, nil
+	}
 	return
 }
 

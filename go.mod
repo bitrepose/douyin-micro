@@ -5,22 +5,40 @@ go 1.18
 require (
 	github.com/apache/thrift v0.13.0
 	github.com/cloudwego/kitex v0.3.1
+	github.com/minio/minio-go/v7 v7.0.26
 	github.com/opentracing/opentracing-go v1.2.0
 	go.uber.org/zap v1.17.0
+	gorm.io/gorm v1.23.5
 )
 
 require (
 	github.com/coreos/go-semver v0.3.0 // indirect
 	github.com/coreos/go-systemd/v22 v22.3.2 // indirect
+	github.com/dustin/go-humanize v1.0.0 // indirect
+	github.com/go-sql-driver/mysql v1.6.0 // indirect
+	github.com/gofrs/uuid v4.2.0+incompatible // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
+	github.com/google/uuid v1.1.2 // indirect
+	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/jinzhu/now v1.1.4 // indirect
+	github.com/klauspost/compress v1.13.5 // indirect
+	github.com/klauspost/cpuid v1.3.1 // indirect
+	github.com/minio/md5-simd v1.1.0 // indirect
+	github.com/minio/sha256-simd v0.1.1 // indirect
+	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/rs/xid v1.2.1 // indirect
+	github.com/satori/go.uuid v1.2.0 // indirect
+	github.com/sirupsen/logrus v1.8.1 // indirect
 	github.com/uber/jaeger-lib v2.4.1+incompatible // indirect
 	go.etcd.io/etcd/api/v3 v3.5.1 // indirect
 	go.etcd.io/etcd/client/pkg/v3 v3.5.1 // indirect
 	go.etcd.io/etcd/client/v3 v3.5.1 // indirect
 	go.uber.org/atomic v1.8.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
+	golang.org/x/crypto v0.0.0-20210616213533-5ff15b29337e // indirect
 	google.golang.org/grpc v1.38.0 // indirect
+	gopkg.in/ini.v1 v1.57.0 // indirect
 )
 
 require (
@@ -46,4 +64,6 @@ require (
 	google.golang.org/protobuf v1.26.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
+	gorm.io/driver/mysql v1.3.3
+	gorm.io/plugin/opentracing v0.0.0-20211220013347-7d2b2af23560
 )
