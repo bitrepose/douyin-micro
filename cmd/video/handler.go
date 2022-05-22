@@ -13,7 +13,26 @@ type VideoServiceImpl struct{}
 // Feed implements the VideoServiceImpl interface.
 func (s *VideoServiceImpl) Feed(ctx context.Context, req *video.FeedRequset) (resp *video.FeedResponse, err error) {
 	// TODO: Your code here...
-	return
+	resp = new(video.FeedResponse)
+	if req.LatestTime != nil && *req.LatestTime < 0 {
+		resp.StatusCode = errno.ParamErrCode
+		resp.StatusMsg = &errno.ParamErr.ErrMsg
+		return resp, nil
+	}
+
+	videos, next_time, err := service.NewFeedService(ctx).FeedService(req)
+	if err != nil {
+		errMsg := err.Error()
+		resp.StatusCode = errno.ServiceErrCode
+		resp.StatusMsg = &errMsg
+		return resp, nil
+	}
+
+	resp.StatusCode = errno.SuccessCode
+	resp.VideoList = videos
+	resp.NextTime = next_time
+	// req.SetLatestTime(next_time) // resp中的next_time作为下一次req的latest_time
+	return resp, nil
 }
 
 // PublishAction implements the VideoServiceImpl interface.
