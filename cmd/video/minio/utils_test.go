@@ -3,6 +3,7 @@ package minio
 import (
 	"fmt"
 	"os"
+	"strings"
 	"testing"
 )
 
@@ -24,5 +25,6 @@ func TestUploadFile(t *testing.T) {
 func TestGetFileUrl(t *testing.T) {
 	InitMinio()
 	url, err := GetFileUrl("mymusic", "test.mp4", 0)
-	fmt.Println(url, err)
+	fmt.Println(url, err, strings.Split(url.String(), "?")[0])
+	fmt.Println(url.Path, url.RawPath)
 }

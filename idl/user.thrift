@@ -17,7 +17,6 @@ struct UserRegisterResponse {
     1: required i32     status_code;   // 状态码，0-成功，其他值-失败
     2: optional string  status_msg;    // 返回状态描述
     3: required i64     user_id;       // 用户id
-    4: required string  token;         // 用户鉴权token
 }
 
 struct UserLoginRequest {
@@ -29,12 +28,10 @@ struct UserLoginResponse {
     1: required i32     status_code;   // 状态码，0-成功，其他值-失败
     2: optional string  status_msg;    // 返回状态描述
     3: required i64     user_id;       // 用户id
-    4: required string  token;         // 用户鉴权token
 }
 
 struct UserInfoRequest {
     1: required i64     user_id;   // 用户id
-    2: required string  token;     // 用户鉴权token
 }
 
 struct UserInfoResponse {
@@ -45,7 +42,6 @@ struct UserInfoResponse {
 
 struct RelationActionRequest {
     1: required i64     user_id;       // 用户id
-    2: required string  token;         // 用户鉴权token
     3: required i64     to_user_id;    // 对方用户id
     4: required i32     action_type;   // 1-关注，2-取消关注 
 }
@@ -57,7 +53,6 @@ struct RelationActionResponse {
 
 struct RelationFollowListRequest {
     1: required i64     user_id;       // 用户id
-    2: required string  token;         // 用户鉴权token
 }
 
 struct RelationFollowListResponse {
@@ -68,7 +63,6 @@ struct RelationFollowListResponse {
 
 struct RelationFollowerListRequest {
     1: required i64     user_id;       // 用户id
-    2: required string  token;         // 用户鉴权token
 }
 
 struct RelationFollowerListResponse {

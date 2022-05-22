@@ -3,6 +3,7 @@ package constants
 const (
 	VideoTableName               = "video"
 	UserTableName                = "user"
+	FavoriteTableName            = "user_video"
 	SecretKey                    = "secret key"
 	IdentityKey                  = "id"
 	Total                        = "total"

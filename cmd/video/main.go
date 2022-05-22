@@ -1,6 +1,7 @@
 package main
 
 import (
+	"douyin-micro/cmd/video/dal"
 	video "douyin-micro/kitex_gen/video/videoservice"
 	"douyin-micro/pkg/constants"
 	tracer2 "douyin-micro/pkg/tracer"
@@ -14,6 +15,7 @@ import (
 )
 
 func Init() {
+	dal.Init()
 	tracer2.InitJaeger(constants.VideoServiceName)
 }
 

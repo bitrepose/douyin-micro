@@ -34,7 +34,8 @@ func (s *VideoServiceImpl) PublishAction(ctx context.Context, req *video.Publish
 		resp.StatusMsg = &errMsg
 		return resp, nil
 	}
-	return
+	resp.StatusCode = errno.SuccessCode
+	return resp, nil
 }
 
 // PublishList implements the VideoServiceImpl interface.

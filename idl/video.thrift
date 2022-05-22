@@ -14,7 +14,6 @@ struct Video {
 
 struct FeedRequset {
     1: optional i64     latest_time;   // 限制返回视频的最新投稿时间戳，精确到秒，不填表示当前时间
-    2: optional string  token;         // 登陆用户设置
 }
 
 struct FeedResponse {
@@ -25,9 +24,9 @@ struct FeedResponse {
 }
 
 struct PublishActionRequest {
-    1: required string      token;   // 用户鉴权token
-    2: required list<uint8>  data;    // 视频数据
-    3: required string      title;   // 视频标题
+    1: required i64         user_id;  // 用户id
+    2: required list<byte>  data;     // 视频数据
+    3: required string      title;    // 视频标题
 }
 
 struct PublishActionResponse {
@@ -37,7 +36,6 @@ struct PublishActionResponse {
 
 struct PublishListRequest {
     1: required i64     user_id;   // 用户id
-    2: required string  token;     // 用户鉴权token
 }
 
 struct PublishListResponse {
@@ -48,7 +46,6 @@ struct PublishListResponse {
 
 struct FavoriteActionRequest {
     1: required i64     user_id;       // 用户id
-    2: required string  token;         // 用户鉴权token
     3: required i64     video_id;      // 视频id
     4: required i32     action_type;   // 1-点赞，2-取消点赞
 }
@@ -60,7 +57,6 @@ struct FavoriteActionResponse {
 
 struct FavoriteListRequest {
     1: required i64     user_id;       // 用户id
-    2: required string  token;         // 用户鉴权token
 }
 
 struct FavoriteListResponse {
