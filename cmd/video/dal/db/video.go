@@ -16,7 +16,7 @@ type Video struct {
 	FavoriteCount int    `json:"favorite_count"`
 	CommentCount  int    `json:"comment_count"`
 	Title         string `json:"title"`
-	CreatedAt     int64  `json:"created_at"` // Override Model CreateAt
+	CreatedAt     int64  `json:"created_at"` // Override Model CreatedAt
 }
 
 func (v *Video) TableName() string {
@@ -40,7 +40,7 @@ func FeedVideo(ctx context.Context, limit, latest_time int64) ([]*Video, int64, 
 		latest_time = time.Now().Unix()
 		conn = DB.WithContext(ctx).Model(&Video{}).Where("created_at <= ?", latest_time)
 	} else {
-		conn = DB.WithContext(ctx).Model(&Video{}).Where("created_at >= ", latest_time)
+		conn = DB.WithContext(ctx).Model(&Video{}).Where("created_at >= ?", latest_time)
 	}
 
 	if err := conn.Count(&total).Error; err != nil {
