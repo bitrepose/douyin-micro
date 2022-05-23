@@ -16,7 +16,7 @@ type Video struct {
 	FavoriteCount int    `json:"favorite_count"`
 	CommentCount  int    `json:"comment_count"`
 	Title         string `json:"title"`
-	CreateTime    int64  `json:"create_time" gorm:"autoCreateTime"`
+	CreateTime    int64  `json:"create_time" gorm:"autoCreateTime"` // 待加入的字段
 }
 
 func (v *Video) TableName() string {

@@ -18,7 +18,7 @@ func Video(m *db.Video) *video.Video {
 		FavoriteCount: int64(m.FavoriteCount),
 		CommentCount:  int64(m.CommentCount),
 		Title:         m.Title,
-		CreateTime:    m.CreateTime,
+		CreateTime:    m.CreateTime, // 待加入的字段
 	}
 }
 
