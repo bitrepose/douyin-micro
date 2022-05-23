@@ -30,6 +30,7 @@ func Videos(ms []*db.Video) ([]*video.Video, int64) {
 			videos = append(videos, v)
 		}
 	}
+
 	next_time := videos[len(videos)-1].CreateTime // earliest video timestamp
 
 	// reverse the videos so that the latest comes first
