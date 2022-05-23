@@ -9,7 +9,9 @@ require (
 	github.com/minio/minio-go/v7 v7.0.26
 	github.com/opentracing/opentracing-go v1.2.0
 	go.uber.org/zap v1.17.0
+	gorm.io/driver/mysql v1.3.3
 	gorm.io/gorm v1.23.5
+	gorm.io/plugin/opentracing v0.0.0-20211220013347-7d2b2af23560
 )
 
 require (
@@ -63,6 +65,4 @@ require (
 	google.golang.org/protobuf v1.26.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
-	gorm.io/driver/mysql v1.3.3
-	gorm.io/plugin/opentracing v0.0.0-20211220013347-7d2b2af23560
 )

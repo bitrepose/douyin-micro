@@ -1,6 +1,7 @@
 package main
 
 import (
+	"douyin-micro/cmd/video/dal"
 	user "douyin-micro/kitex_gen/user/userservice"
 	"douyin-micro/pkg/constants"
 	tracer2 "douyin-micro/pkg/tracer"
@@ -15,6 +16,7 @@ import (
 
 func Init() {
 	tracer2.InitJaeger(constants.UserServiceName)
+	dal.Init()
 }
 
 func main() {
