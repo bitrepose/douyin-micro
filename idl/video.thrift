@@ -10,10 +10,12 @@ struct Video {
     5: required i64        favorite_count;   // 视频的点赞总数
     6: required i64        comment_count;    // 视频的评论总数
     7: required string     title;            // 视频标题
+    8: required bool       is_favorite;      // 是否喜欢
 }
 
 struct FeedRequset {
     1: optional i64     latest_time;   // 限制返回视频的最新投稿时间戳，精确到秒，不填表示当前时间
+    2: optional i64     req_user_id;   // 发起请求的用户id
 }
 
 struct FeedResponse {
@@ -35,7 +37,8 @@ struct PublishActionResponse {
 }
 
 struct PublishListRequest {
-    1: required i64     user_id;   // 用户id
+    1: required i64     user_id;       // 用户id
+    2: required i64     req_user_id;   // 发起请求的用户id
 }
 
 struct PublishListResponse {
@@ -57,6 +60,7 @@ struct FavoriteActionResponse {
 
 struct FavoriteListRequest {
     1: required i64     user_id;       // 用户id
+    2: required i64     req_user_id;   // 发起请求的用户id
 }
 
 struct FavoriteListResponse {
