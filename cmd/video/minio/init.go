@@ -21,4 +21,5 @@ func InitMinio() {
 	// fmt.Println(client)
 	klog.Info("minio client init successfully")
 	minioClient = client
+	CreateBucket(constants.MinioVideoBucketName)
 }

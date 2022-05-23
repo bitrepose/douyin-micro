@@ -13,7 +13,7 @@ import (
 type Client interface {
 	UserRegister(ctx context.Context, req *user.UserRegisterRequest, callOptions ...callopt.Option) (r *user.UserRegisterResponse, err error)
 	UserLogin(ctx context.Context, req *user.UserLoginRequest, callOptions ...callopt.Option) (r *user.UserLoginResponse, err error)
-	UserInfo(ctx context.Context, req *user.UserInfoRequest, callOptions ...callopt.Option) (r *user.UserInfoResponse, err error)
+	MUserInfo(ctx context.Context, req *user.MUserInfoRequest, callOptions ...callopt.Option) (r *user.MUserInfoResponse, err error)
 	RelationAction(ctx context.Context, req *user.RelationActionRequest, callOptions ...callopt.Option) (r *user.RelationActionResponse, err error)
 	RelationFollowList(ctx context.Context, req *user.RelationFollowListRequest, callOptions ...callopt.Option) (r *user.RelationFollowListResponse, err error)
 	RelationFollowerList(ctx context.Context, req *user.RelationFollowerListRequest, callOptions ...callopt.Option) (r *user.RelationFollowerListResponse, err error)
@@ -58,9 +58,9 @@ func (p *kUserServiceClient) UserLogin(ctx context.Context, req *user.UserLoginR
 	return p.kClient.UserLogin(ctx, req)
 }
 
-func (p *kUserServiceClient) UserInfo(ctx context.Context, req *user.UserInfoRequest, callOptions ...callopt.Option) (r *user.UserInfoResponse, err error) {
+func (p *kUserServiceClient) MUserInfo(ctx context.Context, req *user.MUserInfoRequest, callOptions ...callopt.Option) (r *user.MUserInfoResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.UserInfo(ctx, req)
+	return p.kClient.MUserInfo(ctx, req)
 }
 
 func (p *kUserServiceClient) RelationAction(ctx context.Context, req *user.RelationActionRequest, callOptions ...callopt.Option) (r *user.RelationActionResponse, err error) {

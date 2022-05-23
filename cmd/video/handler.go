@@ -66,7 +66,18 @@ func (s *VideoServiceImpl) PublishList(ctx context.Context, req *video.PublishLi
 // FavoriteAction implements the VideoServiceImpl interface.
 func (s *VideoServiceImpl) FavoriteAction(ctx context.Context, req *video.FavoriteActionRequest) (resp *video.FavoriteActionResponse, err error) {
 	// TODO: Your code here...
-	return
+	if req.ActionType != 1 && req.ActionType != 2 {
+		resp.StatusCode = errno.ParamErrCode
+		resp.StatusMsg = &errno.ParamErr.ErrMsg
+	}
+	err = service.NewFavoriteActionService(ctx).FavoriteAction(req)
+	if err != nil {
+		errMsg := err.Error()
+		resp.StatusCode = errno.ServiceErrCode
+		resp.StatusMsg = &errMsg
+		return resp, nil
+	}
+	return resp, nil
 }
 
 // FavoriteList implements the VideoServiceImpl interface.

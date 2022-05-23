@@ -21,7 +21,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	methods := map[string]kitex.MethodInfo{
 		"UserRegister":         kitex.NewMethodInfo(userRegisterHandler, newUserServiceUserRegisterArgs, newUserServiceUserRegisterResult, false),
 		"UserLogin":            kitex.NewMethodInfo(userLoginHandler, newUserServiceUserLoginArgs, newUserServiceUserLoginResult, false),
-		"UserInfo":             kitex.NewMethodInfo(userInfoHandler, newUserServiceUserInfoArgs, newUserServiceUserInfoResult, false),
+		"MUserInfo":            kitex.NewMethodInfo(mUserInfoHandler, newUserServiceMUserInfoArgs, newUserServiceMUserInfoResult, false),
 		"RelationAction":       kitex.NewMethodInfo(relationActionHandler, newUserServiceRelationActionArgs, newUserServiceRelationActionResult, false),
 		"RelationFollowList":   kitex.NewMethodInfo(relationFollowListHandler, newUserServiceRelationFollowListArgs, newUserServiceRelationFollowListResult, false),
 		"RelationFollowerList": kitex.NewMethodInfo(relationFollowerListHandler, newUserServiceRelationFollowerListArgs, newUserServiceRelationFollowerListResult, false),
@@ -76,22 +76,22 @@ func newUserServiceUserLoginResult() interface{} {
 	return user.NewUserServiceUserLoginResult()
 }
 
-func userInfoHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*user.UserServiceUserInfoArgs)
-	realResult := result.(*user.UserServiceUserInfoResult)
-	success, err := handler.(user.UserService).UserInfo(ctx, realArg.Req)
+func mUserInfoHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserServiceMUserInfoArgs)
+	realResult := result.(*user.UserServiceMUserInfoResult)
+	success, err := handler.(user.UserService).MUserInfo(ctx, realArg.Req)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newUserServiceUserInfoArgs() interface{} {
-	return user.NewUserServiceUserInfoArgs()
+func newUserServiceMUserInfoArgs() interface{} {
+	return user.NewUserServiceMUserInfoArgs()
 }
 
-func newUserServiceUserInfoResult() interface{} {
-	return user.NewUserServiceUserInfoResult()
+func newUserServiceMUserInfoResult() interface{} {
+	return user.NewUserServiceMUserInfoResult()
 }
 
 func relationActionHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -178,11 +178,11 @@ func (p *kClient) UserLogin(ctx context.Context, req *user.UserLoginRequest) (r 
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) UserInfo(ctx context.Context, req *user.UserInfoRequest) (r *user.UserInfoResponse, err error) {
-	var _args user.UserServiceUserInfoArgs
+func (p *kClient) MUserInfo(ctx context.Context, req *user.MUserInfoRequest) (r *user.MUserInfoResponse, err error) {
+	var _args user.UserServiceMUserInfoArgs
 	_args.Req = req
-	var _result user.UserServiceUserInfoResult
-	if err = p.c.Call(ctx, "UserInfo", &_args, &_result); err != nil {
+	var _result user.UserServiceMUserInfoResult
+	if err = p.c.Call(ctx, "MUserInfo", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

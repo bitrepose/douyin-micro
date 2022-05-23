@@ -50,7 +50,7 @@ func (s *PublishActionService) PublishAction(req *video.PublishActionRequest) er
 	}
 	// 封装video
 	videoModel := &db.Video{
-		UserId:        int(req.UserId),
+		UserId:        req.UserId,
 		PlayUrl:       playUrl,
 		CoverUrl:      "",
 		FavoriteCount: 0,
