@@ -25,12 +25,12 @@ func (s *FeedService) FeedService(req *video.FeedRequset) ([]*video.Video, *int6
 		*req.LatestTime = 0
 	}
 
-	videoModels, err := db.FeedVideo(s.ctx, LIMIT, int(*req.LatestTime))
+	videoModels, next_time, err := db.FeedVideo(s.ctx, LIMIT, *req.LatestTime)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	videos, next_time := pack.Videos(videoModels)
+	videos := pack.Videos(videoModels)
 
 	return videos, &next_time, nil
 }
