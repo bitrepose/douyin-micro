@@ -13,7 +13,7 @@ const (
 	VideoServiceName             = "demovideo"
 	CommentServiceName           = "democomment"
 	UserServiceName              = "demouser"
-	MySQLDefaultDSN              = "gorm:gorm@tcp(localhost:9910)/gorm?charset=utf8&parseTime=True&loc=Local"
+	MySQLDefaultDSN              = "root:SUDAcs647#SQL@tcp(139.196.145.51:3306)/douyin?parseTime=True&loc=Local"
 	EtcdAddress                  = "127.0.0.1:2379"
 	CPURateLimit         float64 = 80.0
 	DefaultLimit                 = 10

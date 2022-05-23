@@ -6,31 +6,82 @@ import (
 	"errors"
 	"time"
 
-	"github.com/cloudwego/kitex/pkg/klog"
 	"gorm.io/gorm"
 )
 
-type Favorite struct {
-	UserId     int  `json:"user_id" gorm:"primaryKey;autoIncrement:false"`
-	VideoId    int  `json:"video_id" gorm:"primaryKey;autoIncrement:false"`
-	IsFavorite bool `json:"is_favorite"`
-	CreatedAt  time.Time
-	DeletedAt  gorm.DeletedAt
+type FavoriteRelation struct {
+	UserId    int64 `json:"user_id" gorm:"primaryKey;autoIncrement:false"`
+	VideoId   int64 `json:"video_id" gorm:"primaryKey;autoIncrement:false"`
+	CreatedAt time.Time
+	DeletedAt gorm.DeletedAt
 }
 
-func (f *Favorite) TableName() string {
+func (f *FavoriteRelation) TableName() string {
 	return constants.FavoriteTableName
 }
 
-func UpdateFavorite(ctx context.Context, f *Favorite) error {
-	newF := new(Favorite)
-	err := DB.Where("user_id = ? AND video_id = ?", f.UserId, f.VideoId).Take(newF).Error
-	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return DB.WithContext(ctx).Create(f).Error
+func Favorite(ctx context.Context, userId int64, videoId int64) error {
+	err := DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		// 在事务中执行一些 db 操作（从这里开始，您应该使用 'tx' 而不是 'db'）
+		//1. 新增点赞关系
+		e := tx.Create(&FavoriteRelation{UserId: userId, VideoId: videoId}).Error
+		if e != nil {
+			return e
 		}
-		klog.Error("db went wrong,", err)
-		return err
+		//2.改变 video 表中的 favorite count
+		res := tx.Model(new(Video)).Where("ID = ?", videoId).Update("favorite_count", gorm.Expr("favorite_count + ?", 1))
+		if res.Error != nil {
+			return res.Error
+		}
+		if res.RowsAffected != 1 {
+			return errors.New("favorite update error")
+		}
+		// 返回 nil 提交事务
+		if e != nil {
+			return e
+		}
+		return nil
+	})
+	return err
+}
+
+func DisFavorite(ctx context.Context, userId int64, videoId int64) error {
+	err := DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		// 在事务中执行一些 db 操作（从这里开始，您应该使用 'tx' 而不是 'db'）
+		//1. 删除点赞关系
+		e := tx.Delete(&FavoriteRelation{UserId: userId, VideoId: videoId}).Error
+		if e != nil {
+			return e
+		}
+		//2.改变 video 表中的 favorite count
+		e = tx.Model(new(Video)).Where("ID = ?", videoId).Update("favorite_count", gorm.Expr("favorite_count - ?", 1)).Error
+		if e != nil {
+			return e
+		}
+		// 返回 nil 提交事务
+		if e != nil {
+			return e
+		}
+		return nil
+	})
+	return err
+}
+
+type FavRes struct {
+	ID            int64
+	UserId        int64  `json:"user_id"`
+	PlayUrl       string `json:"play_url"`
+	CoverUrl      string `json:"cover_url"`
+	FavoriteCount int    `json:"favorite_count"`
+	CommentCount  int    `json:"comment_count"`
+	Title         string `json:"title"`
+}
+
+func FavoriteList(ctx context.Context, userId int64) ([]*FavRes, error) {
+	var favList []*FavRes
+	err := DB.WithContext(ctx).Raw("SELECT v.id as id, v.user_id, play_url, cover_url, favorite_count, comment_count, title FROM video as v inner join user_video as uv on v.id = uv.video_id WHERE uv.user_id = ?", userId).Scan(&favList).Error
+	if err != nil {
+		return nil, err
 	}
-	return DB.WithContext(ctx).Where("user_id = ? AND video_id = ?", f.UserId, f.VideoId).Update("is_favorite", f.IsFavorite).Error
+	return favList, nil
 }

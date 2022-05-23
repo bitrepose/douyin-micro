@@ -28,3 +28,12 @@ func TestGetFileUrl(t *testing.T) {
 	fmt.Println(url, err, strings.Split(url.String(), "?")[0])
 	fmt.Println(url.Path, url.RawPath)
 }
+
+func TestCreateBucket(t *testing.T) {
+	InitMinio()
+	CreateBucket("")
+}
+
+func TestInitMinio(t *testing.T) {
+	InitMinio()
+}

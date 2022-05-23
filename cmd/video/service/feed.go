@@ -4,6 +4,8 @@ import (
 	"context"
 	"douyin-micro/cmd/video/dal/db"
 	"douyin-micro/cmd/video/pack"
+	"douyin-micro/cmd/video/rpc"
+	"douyin-micro/kitex_gen/user"
 	"douyin-micro/kitex_gen/video"
 )
 
@@ -29,8 +31,10 @@ func (s *FeedService) FeedService(req *video.FeedRequset) ([]*video.Video, *int6
 	if err != nil {
 		return nil, nil, err
 	}
-
-	videos := pack.Videos(videoModels)
+	userMap, err := rpc.MUserInfo(s.ctx, &user.MUserInfoRequest{
+		UserIds: pack.UserIds(videoModels),
+	})
+	videos := pack.Videos(videoModels, userMap)
 
 	return videos, &next_time, nil
 }

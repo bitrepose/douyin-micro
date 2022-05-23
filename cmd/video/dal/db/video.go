@@ -10,7 +10,7 @@ import (
 
 type Video struct {
 	gorm.Model
-	UserId        int    `json:"user_id"`
+	UserId        int64  `json:"user_id"`
 	PlayUrl       string `json:"play_url"`
 	CoverUrl      string `json:"cover_url"`
 	FavoriteCount int    `json:"favorite_count"`

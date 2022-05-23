@@ -4,6 +4,8 @@ import (
 	"context"
 	"douyin-micro/cmd/video/dal/db"
 	"douyin-micro/kitex_gen/video"
+	"douyin-micro/pkg/errno"
+	"errors"
 )
 
 type FavoriteActionService struct {
@@ -17,14 +19,13 @@ func NewFavoriteActionService(ctx context.Context) *FavoriteActionService {
 }
 
 func (s *FavoriteActionService) FavoriteAction(req *video.FavoriteActionRequest) error {
-	isFavorite := false
+	// 1-点赞
 	if req.ActionType == 1 {
-		isFavorite = true
+		return db.Favorite(s.ctx, req.UserId, req.VideoId)
 	}
-	favoriteModel := &db.Favorite{
-		UserId:     int(req.UserId),
-		VideoId:    int(req.VideoId),
-		IsFavorite: isFavorite,
+	// 2-取消点赞
+	if req.ActionType == 2 {
+		return db.DisFavorite(s.ctx, req.UserId, req.VideoId)
 	}
-	return db.UpdateFavorite(s.ctx, favoriteModel)
+	return errors.New(errno.ParamErr.ErrMsg)
 }

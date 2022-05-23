@@ -5,7 +5,6 @@ import (
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"gorm.io/gorm/schema"
 	gormopentracing "gorm.io/plugin/opentracing"
 )
 
@@ -18,9 +17,9 @@ func Init() {
 		&gorm.Config{
 			PrepareStmt:            true,
 			SkipDefaultTransaction: true,
-			NamingStrategy: schema.NamingStrategy{
-				SingularTable: true, // Migrate时创建单数Video表
-			},
+			// NamingStrategy: schema.NamingStrategy{
+			// 	SingularTable: true, // Migrate时创建单数Video表
+			// },
 		},
 	)
 	if err != nil {
@@ -31,11 +30,14 @@ func Init() {
 		panic(err)
 	}
 
-	m := DB.Migrator()
-	if m.HasTable(&Video{}) {
-		return
-	}
-	if err = m.CreateTable(&Video{}); err != nil {
+	if err := DB.AutoMigrate(new(Video), new(FavoriteRelation)); err != nil {
 		panic(err)
 	}
+	// m := DB.Migrator()
+	// if m.HasTable(&Video{}) {
+	// 	return
+	// }
+	// if err = m.CreateTable(&Video{}); err != nil {
+	// 	panic(err)
+	// }
 }

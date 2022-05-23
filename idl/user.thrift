@@ -30,14 +30,15 @@ struct UserLoginResponse {
     3: required i64     user_id;       // 用户id
 }
 
-struct UserInfoRequest {
-    1: required i64     user_id;   // 用户id
+struct MUserInfoRequest {
+    1: required list<i64>     user_ids;      // 用户id
+    2: required i64           req_user_id;   // 发起请求的用户id
 }
 
-struct UserInfoResponse {
-    1: required i32     status_code;   // 状态码，0-成功，其他值-失败
-    2: optional string  status_msg;    // 返回状态描述
-    3: required User    user;          // 用户信息
+struct MUserInfoResponse {
+    1: required i32           status_code;   // 状态码，0-成功，其他值-失败
+    2: optional string        status_msg;    // 返回状态描述
+    3: required list<User>    users;         // 用户信息
 }
 
 struct RelationActionRequest {
@@ -53,6 +54,7 @@ struct RelationActionResponse {
 
 struct RelationFollowListRequest {
     1: required i64     user_id;       // 用户id
+    2: required i64     req_user_id;   // 发起请求的用户id
 }
 
 struct RelationFollowListResponse {
@@ -63,6 +65,7 @@ struct RelationFollowListResponse {
 
 struct RelationFollowerListRequest {
     1: required i64     user_id;       // 用户id
+    2: required i64     req_user_id;   // 发起请求的用户id
 }
 
 struct RelationFollowerListResponse {
@@ -74,7 +77,7 @@ struct RelationFollowerListResponse {
 service UserService {
     UserRegisterResponse UserRegister(1: UserRegisterRequest req)
     UserLoginResponse UserLogin(1: UserLoginRequest req)
-    UserInfoResponse UserInfo(1: UserInfoRequest req)
+    MUserInfoResponse MUserInfo(1: MUserInfoRequest req)
     RelationActionResponse RelationAction(1: RelationActionRequest req)
     RelationFollowListResponse RelationFollowList(1: RelationFollowListRequest req)
     RelationFollowerListResponse RelationFollowerList(1: RelationFollowerListRequest req)

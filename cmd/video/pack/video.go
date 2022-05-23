@@ -2,11 +2,12 @@ package pack
 
 import (
 	"douyin-micro/cmd/video/dal/db"
+	"douyin-micro/kitex_gen/user"
 	"douyin-micro/kitex_gen/video"
 )
 
 // Video pack video info
-func Video(m *db.Video) *video.Video {
+func Video(m *db.Video, u *user.User) *video.Video {
 	if m == nil {
 		return nil
 	}
@@ -18,14 +19,15 @@ func Video(m *db.Video) *video.Video {
 		FavoriteCount: int64(m.FavoriteCount),
 		CommentCount:  int64(m.CommentCount),
 		Title:         m.Title,
+		Author:        u,
 	}
 }
 
 // Videos pack list of video info
-func Videos(ms []*db.Video) []*video.Video {
+func Videos(ms []*db.Video, us map[int64]*user.User) []*video.Video {
 	videos := make([]*video.Video, 0)
 	for _, m := range ms {
-		if v := Video(m); v != nil {
+		if v := Video(m, us[m.UserId]); v != nil {
 			videos = append(videos, v)
 		}
 	}
@@ -35,4 +37,21 @@ func Videos(ms []*db.Video) []*video.Video {
 	// }
 
 	return videos
+}
+
+func UserIds(ms []*db.Video) []int64 {
+	if len(ms) == 0 {
+		return []int64{}
+	}
+	uIds := make([]int64, len(ms))
+	uIdMap := make(map[int64]any)
+	for _, m := range ms {
+		if m != nil {
+			uIdMap[m.UserId] = struct{}{}
+		}
+	}
+	for uId := range uIdMap {
+		uIds = append(uIds, uId)
+	}
+	return uIds
 }
