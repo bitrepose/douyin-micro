@@ -37,7 +37,7 @@ func GetFollowedId(ctx context.Context, userId int64) (*[]int64, error) {
 	return &res, result.Error
 }
 
-//Followed
+//Followed 查询当前用户是否关注了某个用户
 //@Params userId 当前用户id
 //@Params toUserId 某个用户id
 //return bool类型 表示当前用户是否关注了某个用户
