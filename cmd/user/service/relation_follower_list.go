@@ -19,6 +19,10 @@ func (s *RelationFollowerListService) RelationFollowerList(req *user.RelationFol
 	followerIds, err := db.GetFollowersId(s.ctx, req.UserId)
 	var result = []*user.User{}
 	if err != nil {
+		return result, err
+	}
+	// 这个用户没有任何粉丝
+	if followerIds == nil || len(*followerIds) == 0 {
 		return result, nil
 	}
 	users, err := db.FindUsersByIds(s.ctx, followerIds)
@@ -30,11 +34,11 @@ func (s *RelationFollowerListService) RelationFollowerList(req *user.RelationFol
 		//if err!=nil && !errors.As(err,&gorm.ErrRecordNotFound) {
 		//	return nil,err
 		//}
-		// ?2. 如果有异常 就先让他为false
+		// ?2. 如果有异常,说明没有关注 就让他为false
 		if err != nil {
 			tempUser.IsFollow = false
 		}
-		result = append(result, pack.ConvUser(&tempUser))
+		result = append(result, pack.ConvUser(tempUser))
 	}
 	return result, nil
 }

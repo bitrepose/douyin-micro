@@ -19,9 +19,13 @@ func (s *RelationFollowListService) RelationFollowList(req *user.RelationFollowL
 	followedIds, err := db.GetFollowedId(s.ctx, req.UserId)
 	var users = []*user.User{}
 	if err != nil {
-		// 这里如果有异常 且类型为ErrNotFoundRecord 则表明这个用户没有关注任何人
+		//这里有异常 表示从follow表中查找用户id出错
+		return users, err
+	}
+	if followedIds == nil || len(*followedIds) == 0 {
 		return users, nil
 	}
+
 	usersResult, err2 := db.FindUsersByIds(s.ctx, followedIds)
 	if err2 != nil {
 		// 这里有异常 表明从user表中查找用户出错
@@ -29,7 +33,7 @@ func (s *RelationFollowListService) RelationFollowList(req *user.RelationFollowL
 	}
 	for _, tempUser := range *usersResult {
 		tempUser.IsFollow = true
-		users = append(users, pack.ConvUser(&tempUser))
+		users = append(users, pack.ConvUser(tempUser))
 	}
 	return users, nil
 }
