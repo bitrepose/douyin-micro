@@ -723,6 +723,20 @@ func (p *CommentActionResponse) FastRead(buf []byte) (int, error) {
 					goto SkipFieldError
 				}
 			}
+		case 3:
+			if fieldTypeId == thrift.STRUCT {
+				l, err = p.FastReadField3(buf[offset:])
+				offset += l
+				if err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
+				offset += l
+				if err != nil {
+					goto SkipFieldError
+				}
+			}
 		default:
 			l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
 			offset += l
@@ -791,6 +805,17 @@ func (p *CommentActionResponse) FastReadField2(buf []byte) (int, error) {
 	return offset, nil
 }
 
+func (p *CommentActionResponse) FastReadField3(buf []byte) (int, error) {
+	offset := 0
+	p.Comment = NewComment()
+	if l, err := p.Comment.FastRead(buf[offset:]); err != nil {
+		return offset, err
+	} else {
+		offset += l
+	}
+	return offset, nil
+}
+
 // for compatibility
 func (p *CommentActionResponse) FastWrite(buf []byte) int {
 	return 0
@@ -802,6 +827,7 @@ func (p *CommentActionResponse) FastWriteNocopy(buf []byte, binaryWriter bthrift
 	if p != nil {
 		offset += p.fastWriteField1(buf[offset:], binaryWriter)
 		offset += p.fastWriteField2(buf[offset:], binaryWriter)
+		offset += p.fastWriteField3(buf[offset:], binaryWriter)
 	}
 	offset += bthrift.Binary.WriteFieldStop(buf[offset:])
 	offset += bthrift.Binary.WriteStructEnd(buf[offset:])
@@ -814,6 +840,7 @@ func (p *CommentActionResponse) BLength() int {
 	if p != nil {
 		l += p.field1Length()
 		l += p.field2Length()
+		l += p.field3Length()
 	}
 	l += bthrift.Binary.FieldStopLength()
 	l += bthrift.Binary.StructEndLength()
@@ -840,6 +867,16 @@ func (p *CommentActionResponse) fastWriteField2(buf []byte, binaryWriter bthrift
 	return offset
 }
 
+func (p *CommentActionResponse) fastWriteField3(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+	offset := 0
+	if p.IsSetComment() {
+		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "comment", thrift.STRUCT, 3)
+		offset += p.Comment.FastWriteNocopy(buf[offset:], binaryWriter)
+		offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	}
+	return offset
+}
+
 func (p *CommentActionResponse) field1Length() int {
 	l := 0
 	l += bthrift.Binary.FieldBeginLength("status_code", thrift.I32, 1)
@@ -855,6 +892,16 @@ func (p *CommentActionResponse) field2Length() int {
 		l += bthrift.Binary.FieldBeginLength("status_msg", thrift.STRING, 2)
 		l += bthrift.Binary.StringLengthNocopy(*p.StatusMsg)
 
+		l += bthrift.Binary.FieldEndLength()
+	}
+	return l
+}
+
+func (p *CommentActionResponse) field3Length() int {
+	l := 0
+	if p.IsSetComment() {
+		l += bthrift.Binary.FieldBeginLength("comment", thrift.STRUCT, 3)
+		l += p.Comment.BLength()
 		l += bthrift.Binary.FieldEndLength()
 	}
 	return l
