@@ -25,19 +25,23 @@ func Init() {
 		panic(err.(any))
 	}
 
-	m := DB.Migrator()
-	if m.HasTable(&User{}) {
-	} else {
-		if err = m.CreateTable(&User{}); err != nil {
-			panic(err.(any))
-		}
+	if err = DB.AutoMigrate(&User{}, &FollowRelation{}); err != nil {
+		panic(err.(any))
 	}
 
-	if m.HasTable(&FollowRelation{}) {
-	} else {
-		if err = m.CreateTable(&FollowRelation{}); err != nil {
-			panic(err.(any))
-		}
-	}
+	//m := DB.Migrator()
+	//if m.HasTable(&User{}) {
+	//} else {
+	//	if err = m.CreateTable(&User{}); err != nil {
+	//		panic(err.(any))
+	//	}
+	//}
+	//
+	//if m.HasTable(&FollowRelation{}) {
+	//} else {
+	//	if err = m.CreateTable(&FollowRelation{}); err != nil {
+	//		panic(err.(any))
+	//	}
+	//}
 
 }
