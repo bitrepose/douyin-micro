@@ -32,11 +32,6 @@ func Videos(ms []*db.Video, us map[int64]*user.User) []*video.Video {
 			videos = append(videos, v)
 		}
 	}
-	// reverse the videos so that the latest comes first
-	// for i, j := 0, len(videos)-1; i < j; i, j = i+1, j-1 {
-	// 	videos[i], videos[j] = videos[j], videos[i]
-	// }
-
 	return videos
 }
 

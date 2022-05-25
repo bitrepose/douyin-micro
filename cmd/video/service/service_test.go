@@ -34,3 +34,19 @@ func TestPublishAction(t *testing.T) {
 	err := NewPublishActionService(context.Background()).PublishAction(req)
 	klog.Error(err)
 }
+
+func TestFeedService(t *testing.T) {
+	req := &video.FeedRequset{
+		LatestTime: nil,
+		ReqUserId:  nil,
+	}
+	dal.Init()
+	videos, next_time, err := NewFeedService(context.Background()).FeedService(req)
+	if err != nil {
+		klog.Error(err)
+	}
+	for _, v := range videos {
+		klog.Info("Videos: ", v)
+	}
+	klog.Info("Next Time: ", next_time)
+}
