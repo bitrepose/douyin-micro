@@ -21,6 +21,7 @@ struct CommentActionRequest {
 struct CommentActionResponse {
     1: required i32     status_code;   // 状态码，0-成功，其他值-失败
     2: optional string  status_msg;    // 返回状态描述
+    3: optional Comment comment;       // 评论成功返回评论内容，不需要重新拉取整个列表
 }
 
 struct CommentListRequest {
