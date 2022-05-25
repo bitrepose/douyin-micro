@@ -6,10 +6,14 @@ import (
 	"douyin-micro/pkg/constants"
 )
 
-func PostComment(ctx context.Context, cmt *db.Comment) (*db.Comment,constants.PostCommentMessage) {
-		
+func PostComment(ctx context.Context, cmt *db.Comment) (constants.PostCommentMessage) {
+	err := db.CreateComment(ctx,cmt)
+	if err != nil{
+		return constants.PostCommentFailure
+	}
+	return constants.PostCommentSuccess
 }
 
 func DeleteComent(ctx context.Context,cmt *db.Comment)constants.DeleteCommentMessage{
-
+	
 }
