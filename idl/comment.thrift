@@ -11,11 +11,10 @@ struct Comment {
 
 struct CommentActionRequest {
     1: required i64     user_id;       // 用户id
-    2: required string  token;         // 用户鉴权token
-    3: required i64     video_id;      // 视频id
-    4: required i32     action_type;   // 1-发布评论，2-删除评论
-    5: optional string  comment_text;  // 用户填写的评论内容，action_type为1时使用
-    6: optional string  comment_id;    // 要删除的评论id，action_type为2时使用
+    2: required i64     video_id;      // 视频id
+    3: required i32     action_type;   // 1-发布评论，2-删除评论
+    4: optional string  comment_text;  // 用户填写的评论内容，action_type为1时使用
+    5: optional string  comment_id;    // 要删除的评论id，action_type为2时使用
 }
 
 struct CommentActionResponse {
@@ -25,7 +24,7 @@ struct CommentActionResponse {
 
 struct CommentListRequest {
     1: required i64     user_id;       // 用户id
-    2: required string  token;         // 用户鉴权token
+    2: required i64     req_user_id;   // 用户鉴权token
     3: required i64     video_id;      // 视频id
 }
 

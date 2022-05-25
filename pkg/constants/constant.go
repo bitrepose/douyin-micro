@@ -1,6 +1,7 @@
 package constants
 
 const (
+	CommentTableName             = "comment"
 	VideoTableName               = "video"
 	UserTableName                = "user"
 	FavoriteTableName            = "user_video"

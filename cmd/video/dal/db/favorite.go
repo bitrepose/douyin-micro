@@ -77,11 +77,24 @@ type FavRes struct {
 	Title         string `json:"title"`
 }
 
-func FavoriteList(ctx context.Context, userId int64) ([]*FavRes, error) {
-	var favList []*FavRes
-	err := DB.WithContext(ctx).Raw("SELECT v.id as id, v.user_id, play_url, cover_url, favorite_count, comment_count, title FROM video as v inner join user_video as uv on v.id = uv.video_id WHERE uv.user_id = ?", userId).Scan(&favList).Error
+func FavoriteList(ctx context.Context, userId int64) ([]*Video, error) {
+	var favList []*Video
+	err := DB.WithContext(ctx).Table("video").Joins("inner join user_video as uv on video.id = uv.video_id").Where("uv.user_id = ?", userId).Find(&favList).Error
 	if err != nil {
 		return nil, err
 	}
 	return favList, nil
+}
+
+func FavoriteIdList(ctx context.Context, userId int64) (map[int64]any, error) {
+	var favList []int64
+	err := DB.WithContext(ctx).Raw("SELECT v.id FROM video as v inner join user_video as uv on v.id = uv.video_id WHERE uv.user_id = ?", userId).Scan(&favList).Error
+	if err != nil {
+		return nil, err
+	}
+	favSet := make(map[int64]any)
+	for _, m := range favList {
+		favSet[m] = struct{}{}
+	}
+	return favSet, nil
 }

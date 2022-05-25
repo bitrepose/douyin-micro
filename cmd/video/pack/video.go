@@ -20,6 +20,7 @@ func Video(m *db.Video, u *user.User) *video.Video {
 		CommentCount:  int64(m.CommentCount),
 		Title:         m.Title,
 		Author:        u,
+		IsFavorite:    false,
 	}
 }
 

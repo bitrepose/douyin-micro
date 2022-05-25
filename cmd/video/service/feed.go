@@ -35,6 +35,18 @@ func (s *FeedService) FeedService(req *video.FeedRequset) ([]*video.Video, *int6
 		UserIds: pack.UserIds(videoModels),
 	})
 	videos := pack.Videos(videoModels, userMap)
+	if req.ReqUserId != nil {
+		favVideos, err := db.FavoriteIdList(s.ctx, *req.ReqUserId)
+		if err != nil {
+			return nil, nil, err
+		}
+		for _, v := range videos {
+			// 已点赞
+			if _, ok := favVideos[v.Id]; ok == true {
+				v.IsFavorite = true
+			}
+		}
+	}
 
 	return videos, &next_time, nil
 }
