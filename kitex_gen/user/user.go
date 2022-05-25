@@ -1547,7 +1547,7 @@ func (p *UserLoginResponse) Field3DeepEqual(src int64) bool {
 
 type MUserInfoRequest struct {
 	UserIds   []int64 `thrift:"user_ids,1,required" json:"user_ids"`
-	ReqUserId int64   `thrift:"req_user_id,2,required" json:"req_user_id"`
+	ReqUserId *int64  `thrift:"req_user_id,2" json:"req_user_id,omitempty"`
 }
 
 func NewMUserInfoRequest() *MUserInfoRequest {
@@ -1558,13 +1558,18 @@ func (p *MUserInfoRequest) GetUserIds() (v []int64) {
 	return p.UserIds
 }
 
+var MUserInfoRequest_ReqUserId_DEFAULT int64
+
 func (p *MUserInfoRequest) GetReqUserId() (v int64) {
-	return p.ReqUserId
+	if !p.IsSetReqUserId() {
+		return MUserInfoRequest_ReqUserId_DEFAULT
+	}
+	return *p.ReqUserId
 }
 func (p *MUserInfoRequest) SetUserIds(val []int64) {
 	p.UserIds = val
 }
-func (p *MUserInfoRequest) SetReqUserId(val int64) {
+func (p *MUserInfoRequest) SetReqUserId(val *int64) {
 	p.ReqUserId = val
 }
 
@@ -1573,12 +1578,15 @@ var fieldIDToName_MUserInfoRequest = map[int16]string{
 	2: "req_user_id",
 }
 
+func (p *MUserInfoRequest) IsSetReqUserId() bool {
+	return p.ReqUserId != nil
+}
+
 func (p *MUserInfoRequest) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
 	var issetUserIds bool = false
-	var issetReqUserId bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -1610,7 +1618,6 @@ func (p *MUserInfoRequest) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetReqUserId = true
 			} else {
 				if err = iprot.Skip(fieldTypeId); err != nil {
 					goto SkipFieldError
@@ -1632,11 +1639,6 @@ func (p *MUserInfoRequest) Read(iprot thrift.TProtocol) (err error) {
 
 	if !issetUserIds {
 		fieldId = 1
-		goto RequiredFieldNotSetError
-	}
-
-	if !issetReqUserId {
-		fieldId = 2
 		goto RequiredFieldNotSetError
 	}
 	return nil
@@ -1683,7 +1685,7 @@ func (p *MUserInfoRequest) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		p.ReqUserId = v
+		p.ReqUserId = &v
 	}
 	return nil
 }
@@ -1747,14 +1749,16 @@ WriteFieldEndError:
 }
 
 func (p *MUserInfoRequest) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("req_user_id", thrift.I64, 2); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI64(p.ReqUserId); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+	if p.IsSetReqUserId() {
+		if err = oprot.WriteFieldBegin("req_user_id", thrift.I64, 2); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(*p.ReqUserId); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -1798,9 +1802,14 @@ func (p *MUserInfoRequest) Field1DeepEqual(src []int64) bool {
 	}
 	return true
 }
-func (p *MUserInfoRequest) Field2DeepEqual(src int64) bool {
+func (p *MUserInfoRequest) Field2DeepEqual(src *int64) bool {
 
-	if p.ReqUserId != src {
+	if p.ReqUserId == src {
+		return true
+	} else if p.ReqUserId == nil || src == nil {
+		return false
+	}
+	if *p.ReqUserId != *src {
 		return false
 	}
 	return true

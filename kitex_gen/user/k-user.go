@@ -1254,7 +1254,6 @@ func (p *MUserInfoRequest) FastRead(buf []byte) (int, error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
 	var issetUserIds bool = false
-	var issetReqUserId bool = false
 	_, l, err = bthrift.Binary.ReadStructBegin(buf)
 	offset += l
 	if err != nil {
@@ -1293,7 +1292,6 @@ func (p *MUserInfoRequest) FastRead(buf []byte) (int, error) {
 				if err != nil {
 					goto ReadFieldError
 				}
-				issetReqUserId = true
 			} else {
 				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
 				offset += l
@@ -1323,11 +1321,6 @@ func (p *MUserInfoRequest) FastRead(buf []byte) (int, error) {
 
 	if !issetUserIds {
 		fieldId = 1
-		goto RequiredFieldNotSetError
-	}
-
-	if !issetReqUserId {
-		fieldId = 2
 		goto RequiredFieldNotSetError
 	}
 	return offset, nil
@@ -1384,8 +1377,7 @@ func (p *MUserInfoRequest) FastReadField2(buf []byte) (int, error) {
 		return offset, err
 	} else {
 		offset += l
-
-		p.ReqUserId = v
+		p.ReqUserId = &v
 
 	}
 	return offset, nil
@@ -1439,10 +1431,12 @@ func (p *MUserInfoRequest) fastWriteField1(buf []byte, binaryWriter bthrift.Bina
 
 func (p *MUserInfoRequest) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "req_user_id", thrift.I64, 2)
-	offset += bthrift.Binary.WriteI64(buf[offset:], p.ReqUserId)
+	if p.IsSetReqUserId() {
+		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "req_user_id", thrift.I64, 2)
+		offset += bthrift.Binary.WriteI64(buf[offset:], *p.ReqUserId)
 
-	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+		offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	}
 	return offset
 }
 
@@ -1459,10 +1453,12 @@ func (p *MUserInfoRequest) field1Length() int {
 
 func (p *MUserInfoRequest) field2Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("req_user_id", thrift.I64, 2)
-	l += bthrift.Binary.I64Length(p.ReqUserId)
+	if p.IsSetReqUserId() {
+		l += bthrift.Binary.FieldBeginLength("req_user_id", thrift.I64, 2)
+		l += bthrift.Binary.I64Length(*p.ReqUserId)
 
-	l += bthrift.Binary.FieldEndLength()
+		l += bthrift.Binary.FieldEndLength()
+	}
 	return l
 }
 
