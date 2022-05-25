@@ -1,6 +1,7 @@
 package constants
 
 const (
+	VideoCommentName  			 = "video_comment"
 	CommentTableName             = "comment"
 	VideoTableName               = "video"
 	UserTableName                = "user"
@@ -58,5 +59,17 @@ func (c DeleteCommentMessage)String()string {
 	case DeleteCommentSuccess: return "Delete comment successfully"
 	case DeleteCommentFailure: return "Fail to delete comment"
 	default: return "Other Errors"
+	}
+}
+type GetCommentListMessage int8
+const (
+	GetCommentListSuccess GetCommentListMessage = 0
+	GetCommentListFailure GetCommentListMessage =1
+)
+func (c GetCommentListMessage)String()string{
+	switch(c){
+	case GetCommentListSuccess: return "Get Comment List Successfully"
+	case GetCommentListFailure: return "Fail to get Comment List"
+	default : return "Other errors"
 	}
 }

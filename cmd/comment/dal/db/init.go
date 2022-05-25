@@ -29,6 +29,10 @@ func InitDB() {
 	}
 	err = DB.AutoMigrate(&Comment{})
 	if err != nil {
-		panic(errors.New("fail to migrate the Comment table"))
+		panic(errors.New("fail to migrate the Comment table comment"))
+	}
+	err = DB.AutoMigrate(&VideoComment{})
+	if err != nil {
+		panic(errors.New("fail to migrate the Comment table video_comment"))
 	}
 }

@@ -5,7 +5,7 @@ import (
 	"douyin-micro/cmd/comment/dal/db"
 	"douyin-micro/cmd/comment/service"
 	"douyin-micro/kitex_gen/comment"
-	"douyin-micro/kitex_gen/user"
+	"douyin-micro/pkg/constants"
 	"time"
 )
 
@@ -22,11 +22,8 @@ func (s *CommentServiceImpl) CommentAction(ctx context.Context, req *comment.Com
 		}
 		code := service.PostComment(ctx, tempComment)
 		msg := code.String()
-		tempUser := &user.User{
-			Id:   1,
-			Name: "ayu",
-		}
-		resp := &comment.CommentActionResponse{
+		tempUser := service.GetUserByUserId(int(req.UserId))
+		resp = &comment.CommentActionResponse{
 			StatusCode: int32(code),
 			StatusMsg:  &msg,
 			Comment: &comment.Comment{
@@ -39,19 +36,47 @@ func (s *CommentServiceImpl) CommentAction(ctx context.Context, req *comment.Com
 		return resp, nil
 
 	} else {
-		
+		code := service.DeleteComent(ctx, int(*req.CommentId))
+		msg := code.String()
+		resp = &comment.CommentActionResponse{
+			StatusCode: int32(code),
+			StatusMsg:  &msg,
+		}
+		return resp, nil
 	}
-	return
 }
 
 // CommentList implements the CommentServiceImpl interface.
 func (s *CommentServiceImpl) CommentList(ctx context.Context, req *comment.CommentListRequest) (resp *comment.CommentListResponse, err error) {
-
-	return
+	comments, code := service.GetCommentList(ctx, int(req.VideoId))
+	msg := code.String()
+	resp.StatusCode = int32(code)
+	resp.StatusMsg = &msg
+	res:= make([]*comment.Comment,len(comments))
+	if code == constants.GetCommentListSuccess {
+		for idx:= range comments{
+			res[idx]= &comment.Comment{
+				Id:int64(comments[idx].ID),
+				User:service.GetUserByUserId(int(req.UserId)),
+				Content: comments[idx].Text,
+				CreateDate: comments[idx].CreatedAt.Format(time.RFC3339Nano),
+			}
+		}
+		resp.CommentList = res
+	}
+	return resp, nil
 }
 
 // MCommentNumber implements the CommentServiceImpl interface.
 func (s *CommentServiceImpl) MCommentNumber(ctx context.Context, req *comment.MCommentNumberRequset) (resp *comment.MCommentNumberResponse, err error) {
-	// TODO: Your code here...
-	return
+	resp.CommentNumbers=make([]int64, len(req.VideoIds))
+	for idx,val:=range req.VideoIds{
+		num,err:= db.QueryCommentNumberByVideo(ctx,val)
+		if err != nil{
+			resp.CommentNumbers[idx]=0
+		} else{
+			resp.CommentNumbers[idx]=num
+		}
+	}
+	return resp,nil 
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 	"douyin-micro/pkg/constants"
 	"errors"
+	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -28,9 +29,9 @@ func CreateComment(ctx context.Context, comment *Comment) error {
 /*
 	根据视频id 找到所有的评论
 */
-func FindCommentSByVideoId(ctx context.Context, videoId int) ([] Comment, error) {
+func FindCommentSByVideoId(ctx context.Context, videoId int) ([]Comment, error) {
 	var comments = []Comment{}
-	result := DB.WithContext(ctx).Where("video_id = ? AND deleted_at = ?", videoId,nil).Find(&comments)
+	result := DB.WithContext(ctx).Raw("SELECT * FROM `comment` WHERE (video_id = ? and deleted_at IS NULL)",videoId).Find(&comments)
 	return comments, result.Error
 }
 /*
@@ -38,7 +39,9 @@ func FindCommentSByVideoId(ctx context.Context, videoId int) ([] Comment, error)
 */
 func FindCommentByCommentId(ctx context.Context,commentId int)(*Comment,error){
 	cmt:=& Comment{} 
-	result:=DB.Where("id = ? and deleted_at = ?",commentId,nil).First(cmt)
+	sql:=fmt.Sprintf("SELECT * FROM `comment` WHERE (id = %d and deleted_at IS NULL)",commentId )
+	result:=DB.WithContext(ctx).Raw(sql).First(cmt)
+
 	if errors.Is(result.Error,gorm.ErrRecordNotFound){
 		return nil,result.Error
 	}
