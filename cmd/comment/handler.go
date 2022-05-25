@@ -5,6 +5,8 @@ import (
 	"douyin-micro/cmd/comment/dal/db"
 	"douyin-micro/cmd/comment/service"
 	"douyin-micro/kitex_gen/comment"
+	"douyin-micro/kitex_gen/user"
+	"time"
 )
 
 // CommentServiceImpl implements the last service interface defined in the IDL.
@@ -19,14 +21,25 @@ func (s *CommentServiceImpl) CommentAction(ctx context.Context, req *comment.Com
 			Text:    *req.CommentText,
 		}
 		code := service.PostComment(ctx, tempComment)
-		msg:=code.String()
-		myresp := &comment.CommentActionResponse{
+		msg := code.String()
+		tempUser := &user.User{
+			Id:   1,
+			Name: "ayu",
+		}
+		resp := &comment.CommentActionResponse{
 			StatusCode: int32(code),
 			StatusMsg:  &msg,
-			Comment: 
+			Comment: &comment.Comment{
+				Id:         int64(tempComment.ID),
+				User:       tempUser,
+				Content:    tempComment.Text,
+				CreateDate: tempComment.CreatedAt.Format(time.RFC3339Nano),
+			},
 		}
-	} else {
+		return resp, nil
 
+	} else {
+		
 	}
 	return
 }

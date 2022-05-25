@@ -14,6 +14,11 @@ func PostComment(ctx context.Context, cmt *db.Comment) (constants.PostCommentMes
 	return constants.PostCommentSuccess
 }
 
-func DeleteComent(ctx context.Context,cmt *db.Comment)constants.DeleteCommentMessage{
-	
+func DeleteComent(ctx context.Context,cmt int)constants.DeleteCommentMessage{
+	success:=db.DeleteCommentByCommentId(ctx,cmt)
+	if success {
+		return constants.DeleteCommentSuccess
+	}else{
+		return constants.DeleteCommentFailure
+	}
 }
