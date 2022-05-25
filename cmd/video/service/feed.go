@@ -27,8 +27,8 @@ func (s *FeedService) FeedService(req *video.FeedRequset) ([]*video.Video, *int6
 		return nil, nil, err
 	}
 	userMap, err := rpc.MUserInfo(s.ctx, &user.MUserInfoRequest{
-		UserIds:   pack.UserIds(videoModels),
-		ReqUserId: 2,
+		UserIds: pack.UserIds(videoModels),
+		// ReqUserId: 2, // TODO!!!
 	})
 	videos := pack.Videos(videoModels, userMap)
 	if req.ReqUserId != nil {
