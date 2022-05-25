@@ -835,8 +835,9 @@ func (p *CommentActionRequest) Field5DeepEqual(src *string) bool {
 }
 
 type CommentActionResponse struct {
-	StatusCode int32   `thrift:"status_code,1,required" json:"status_code"`
-	StatusMsg  *string `thrift:"status_msg,2" json:"status_msg,omitempty"`
+	StatusCode int32    `thrift:"status_code,1,required" json:"status_code"`
+	StatusMsg  *string  `thrift:"status_msg,2" json:"status_msg,omitempty"`
+	Comment    *Comment `thrift:"comment,3" json:"comment,omitempty"`
 }
 
 func NewCommentActionResponse() *CommentActionResponse {
@@ -855,20 +856,37 @@ func (p *CommentActionResponse) GetStatusMsg() (v string) {
 	}
 	return *p.StatusMsg
 }
+
+var CommentActionResponse_Comment_DEFAULT *Comment
+
+func (p *CommentActionResponse) GetComment() (v *Comment) {
+	if !p.IsSetComment() {
+		return CommentActionResponse_Comment_DEFAULT
+	}
+	return p.Comment
+}
 func (p *CommentActionResponse) SetStatusCode(val int32) {
 	p.StatusCode = val
 }
 func (p *CommentActionResponse) SetStatusMsg(val *string) {
 	p.StatusMsg = val
 }
+func (p *CommentActionResponse) SetComment(val *Comment) {
+	p.Comment = val
+}
 
 var fieldIDToName_CommentActionResponse = map[int16]string{
 	1: "status_code",
 	2: "status_msg",
+	3: "comment",
 }
 
 func (p *CommentActionResponse) IsSetStatusMsg() bool {
 	return p.StatusMsg != nil
+}
+
+func (p *CommentActionResponse) IsSetComment() bool {
+	return p.Comment != nil
 }
 
 func (p *CommentActionResponse) Read(iprot thrift.TProtocol) (err error) {
@@ -905,6 +923,16 @@ func (p *CommentActionResponse) Read(iprot thrift.TProtocol) (err error) {
 		case 2:
 			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 3:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField3(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else {
@@ -966,6 +994,14 @@ func (p *CommentActionResponse) ReadField2(iprot thrift.TProtocol) error {
 	return nil
 }
 
+func (p *CommentActionResponse) ReadField3(iprot thrift.TProtocol) error {
+	p.Comment = NewComment()
+	if err := p.Comment.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (p *CommentActionResponse) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
 	if err = oprot.WriteStructBegin("CommentActionResponse"); err != nil {
@@ -978,6 +1014,10 @@ func (p *CommentActionResponse) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField2(oprot); err != nil {
 			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
 			goto WriteFieldError
 		}
 
@@ -1035,6 +1075,25 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
+func (p *CommentActionResponse) writeField3(oprot thrift.TProtocol) (err error) {
+	if p.IsSetComment() {
+		if err = oprot.WriteFieldBegin("comment", thrift.STRUCT, 3); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := p.Comment.Write(oprot); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
 func (p *CommentActionResponse) String() string {
 	if p == nil {
 		return "<nil>"
@@ -1052,6 +1111,9 @@ func (p *CommentActionResponse) DeepEqual(ano *CommentActionResponse) bool {
 		return false
 	}
 	if !p.Field2DeepEqual(ano.StatusMsg) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.Comment) {
 		return false
 	}
 	return true
@@ -1072,6 +1134,13 @@ func (p *CommentActionResponse) Field2DeepEqual(src *string) bool {
 		return false
 	}
 	if strings.Compare(*p.StatusMsg, *src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *CommentActionResponse) Field3DeepEqual(src *Comment) bool {
+
+	if !p.Comment.DeepEqual(src) {
 		return false
 	}
 	return true
