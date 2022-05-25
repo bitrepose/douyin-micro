@@ -27,7 +27,7 @@ func CreateVideo(ctx context.Context, video *Video) error {
 	return DB.WithContext(ctx).Create(video).Error
 }
 
-func FeedVideo(ctx context.Context, limit, latest_time int64) ([]*Video, int64, error) {
+func FeedVideo(ctx context.Context, limit int64, latest_time *int64) ([]*Video, int64, error) {
 	var (
 		total     int64
 		res       []*Video
@@ -36,15 +36,16 @@ func FeedVideo(ctx context.Context, limit, latest_time int64) ([]*Video, int64, 
 	)
 
 	// 处理初次刷新和常规刷新情况
-	if latest_time == 0 {
-		latest_time = time.Now().Unix()
-		conn = DB.WithContext(ctx).Model(&Video{}).Where("created_at <= ?", latest_time)
+	if latest_time == nil {
+		curr_time := time.Now().Unix()
+		latest_time = &curr_time
+		conn = DB.WithContext(ctx).Model(&Video{}).Where("created_at <= ?", *latest_time)
 	} else {
-		conn = DB.WithContext(ctx).Model(&Video{}).Where("created_at >= ?", latest_time)
+		conn = DB.WithContext(ctx).Model(&Video{}).Where("created_at >= ?", *latest_time)
 	}
 
 	if err := conn.Count(&total).Error; err != nil {
-		return res, latest_time, err
+		return res, *latest_time, err
 	}
 
 	// 防止limit溢出
@@ -54,7 +55,7 @@ func FeedVideo(ctx context.Context, limit, latest_time int64) ([]*Video, int64, 
 
 	// 按create_time降序取出video，即将投稿时间倒序播出
 	if err := conn.Limit(int(limit)).Order("created_at desc").Find(&res).Error; err != nil {
-		return res, latest_time, err
+		return res, *latest_time, err
 	}
 
 	next_time = res[len(res)-1].CreatedAt // 将video_list中最早的视频投稿时间作为next_time
