@@ -34,3 +34,29 @@ const (
 	MinioUseSSL                  = false
 	MinioVideoBucketName         = "douyin-video"
 )
+
+type PostCommentMessage int8
+const (
+	PostCommentSuccess PostCommentMessage = 0 
+	PostCommentFailure PostCommentMessage = 1
+)
+
+func (c PostCommentMessage)String()string{
+	switch (c){
+	case PostCommentSuccess: return "Post comment successfully"
+	case PostCommentFailure: return "Fail to post comment"
+	default: return "Other Errors"
+	}
+}
+type DeleteCommentMessage int8
+const (
+	DeleteCommentSuccess DeleteCommentMessage = 0 
+	DeleteCommentFailure DeleteCommentMessage = 1 
+)
+func (c DeleteCommentMessage)String()string {
+	switch(c){
+	case DeleteCommentSuccess: return "Delete comment successfully"
+	case DeleteCommentFailure: return "Fail to delete comment"
+	default: return "Other Errors"
+	}
+}
