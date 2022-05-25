@@ -36,3 +36,9 @@ func (s *CommentServiceImpl) CommentList(ctx context.Context, req *comment.Comme
 
 	return
 }
+
+// MCommentNumber implements the CommentServiceImpl interface.
+func (s *CommentServiceImpl) MCommentNumber(ctx context.Context, req *comment.MCommentNumberRequset) (resp *comment.MCommentNumberResponse, err error) {
+	// TODO: Your code here...
+	return
+}

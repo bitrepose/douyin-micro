@@ -35,7 +35,18 @@ struct CommentListResponse {
     3: required list<Comment>  comment_list;   // 评论列表
 }
 
+struct MCommentNumberRequset {
+    1: required list<i64>     video_ids;   // 视频id列表
+}
+
+struct MCommentNumberResponse {
+    1: required i32          status_code;       // 状态码，0-成功，其他值-失败
+    2: optional string       status_msg;        // 返回状态描述
+    3: required list<i64>    comment_numbers;   // 对应的评论数量
+}
+
 service CommentService {
     CommentActionResponse CommentAction(1: CommentActionRequest req)
     CommentListResponse CommentList(1: CommentListRequest req)
+    MCommentNumberResponse MCommentNumber(1: MCommentNumberRequset req)
 }
