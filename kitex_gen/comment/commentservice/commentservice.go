@@ -19,8 +19,9 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "CommentService"
 	handlerType := (*comment.CommentService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"CommentAction": kitex.NewMethodInfo(commentActionHandler, newCommentServiceCommentActionArgs, newCommentServiceCommentActionResult, false),
-		"CommentList":   kitex.NewMethodInfo(commentListHandler, newCommentServiceCommentListArgs, newCommentServiceCommentListResult, false),
+		"CommentAction":  kitex.NewMethodInfo(commentActionHandler, newCommentServiceCommentActionArgs, newCommentServiceCommentActionResult, false),
+		"CommentList":    kitex.NewMethodInfo(commentListHandler, newCommentServiceCommentListArgs, newCommentServiceCommentListResult, false),
+		"MCommentNumber": kitex.NewMethodInfo(mCommentNumberHandler, newCommentServiceMCommentNumberArgs, newCommentServiceMCommentNumberResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "comment",
@@ -72,6 +73,24 @@ func newCommentServiceCommentListResult() interface{} {
 	return comment.NewCommentServiceCommentListResult()
 }
 
+func mCommentNumberHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*comment.CommentServiceMCommentNumberArgs)
+	realResult := result.(*comment.CommentServiceMCommentNumberResult)
+	success, err := handler.(comment.CommentService).MCommentNumber(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newCommentServiceMCommentNumberArgs() interface{} {
+	return comment.NewCommentServiceMCommentNumberArgs()
+}
+
+func newCommentServiceMCommentNumberResult() interface{} {
+	return comment.NewCommentServiceMCommentNumberResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -97,6 +116,16 @@ func (p *kClient) CommentList(ctx context.Context, req *comment.CommentListReque
 	_args.Req = req
 	var _result comment.CommentServiceCommentListResult
 	if err = p.c.Call(ctx, "CommentList", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) MCommentNumber(ctx context.Context, req *comment.MCommentNumberRequset) (r *comment.MCommentNumberResponse, err error) {
+	var _args comment.CommentServiceMCommentNumberArgs
+	_args.Req = req
+	var _result comment.CommentServiceMCommentNumberResult
+	if err = p.c.Call(ctx, "MCommentNumber", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
