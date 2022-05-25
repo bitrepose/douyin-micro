@@ -9,9 +9,9 @@ import (
 
 // User 用户的模型
 type User struct {
-	ID            int64  `json:"id"`
-	Name          string `json:"name"`
-	Password      string `json:"password"`
+	ID            int64  `json:"id" gorm:"primaryKey"`
+	Name          string `json:"name" gorm:"uniqueIndex:name_index;type:varchar(255)"`
+	Password      string `json:"password" gorm:"type:varchar(255)"`
 	FollowCount   int64  `json:"follow_count"`
 	FollowerCount int64  `json:"follower_count"`
 	IsFollow      bool   `json:"is_follow" gorm:"-"`

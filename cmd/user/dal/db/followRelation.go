@@ -7,7 +7,7 @@ import (
 //FollowRelation 关注者与被关注者关系的模型
 type FollowRelation struct {
 	UserId     int64 `gorm:"primaryKey" json:"user_id"`
-	FollowerId int64 `json:"follower_id" gorm:"primaryKey"`
+	FollowerId int64 `json:"follower_id" gorm:"primaryKey;index:follower_index"`
 }
 
 func (f *FollowRelation) TableName() string {
