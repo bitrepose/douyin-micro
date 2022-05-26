@@ -10,18 +10,18 @@ import (
 
 func TestHandle(t *testing.T) {
 	/*
-		can't tast the handle.go because kitex can't be leaded in windows and TecentServer
+		finish to test
 	*/
 	dal.Init()
 	s := &CommentServiceImpl{}
-	text := string("bigrain")
-	creq := &comment.CommentActionRequest{
-		UserId:      1,
-		VideoId:     1,
-		ActionType:  1,
-		CommentText: &text,
-		CommentId:   nil,
+	videos:= []int64{2}
+	creq := &comment.MCommentNumberRequset{
+		VideoIds:videos,
 	}
-	cresp, _ := s.CommentAction(context.Background(), creq)
-	fmt.Println(cresp.StatusCode, cresp.StatusMsg, cresp.Comment)
+	cresp, _ := s.MCommentNumber(context.Background(), creq)
+	fmt.Printf("%v\n",cresp)
+	fmt.Println(cresp.StatusCode, cresp.StatusMsg)
+	for _,val:=range cresp.CommentNumbers{
+		fmt.Println(val)
+	}
 }

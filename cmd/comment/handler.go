@@ -53,6 +53,7 @@ func (s *CommentServiceImpl) CommentAction(ctx context.Context, req *comment.Com
 
 // CommentList implements the CommentServiceImpl interface.
 func (s *CommentServiceImpl) CommentList(ctx context.Context, req *comment.CommentListRequest) (resp *comment.CommentListResponse, err error) {
+	resp = &comment.CommentListResponse{}
 	comments, code := service.GetCommentList(ctx, int(req.VideoId))
 	msg := code.String()
 	resp.StatusCode = int32(code)
@@ -78,6 +79,7 @@ func (s *CommentServiceImpl) CommentList(ctx context.Context, req *comment.Comme
 
 // MCommentNumber implements the CommentServiceImpl interface.
 func (s *CommentServiceImpl) MCommentNumber(ctx context.Context, req *comment.MCommentNumberRequset) (resp *comment.MCommentNumberResponse, err error) {
+	resp = &comment.MCommentNumberResponse{}
 	resp.CommentNumbers = make([]int64, len(req.VideoIds))
 	for idx, val := range req.VideoIds {
 		num, err := db.QueryCommentNumberByVideo(ctx, val)

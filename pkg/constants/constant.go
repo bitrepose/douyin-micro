@@ -61,7 +61,7 @@ func (c DeleteCommentMessage)String()string {
 	default: return "Other Errors"
 	}
 }
-type GetCommentListMessage int8
+type GetCommentListMessage int32
 const (
 	GetCommentListSuccess GetCommentListMessage = 0
 	GetCommentListFailure GetCommentListMessage =1

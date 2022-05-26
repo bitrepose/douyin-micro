@@ -7,6 +7,12 @@ import (
 )
 
 func GetUserByUserId(ctx context.Context, userId int64, reqUserId int64) (*user.User, error) {
+
+	// ttt:=user.User{
+	// 	Id:1,
+	// 	Name:"hello",
+	// }
+	// return &ttt,nil
 	rpc.InitRPC()
 	users := []int64{int64(userId)}
 	req := &user.MUserInfoRequest{
