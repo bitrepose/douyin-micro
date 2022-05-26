@@ -8,10 +8,9 @@ import (
 	"reflect"
 	"strings"
 
-	"douyin-micro/kitex_gen/user"
-
 	"github.com/apache/thrift/lib/go/thrift"
 
+	"douyin-micro/kitex_gen/user"
 	"github.com/cloudwego/kitex/pkg/protocol/bthrift"
 )
 
@@ -23,6 +22,7 @@ var (
 	_ = reflect.Type(nil)
 	_ = thrift.TProtocol(nil)
 	_ = bthrift.BinaryWriter(nil)
+	_ = user.KitexUnusedProtection
 )
 
 func (p *Video) FastRead(buf []byte) (int, error) {
@@ -1508,7 +1508,6 @@ func (p *PublishListRequest) FastRead(buf []byte) (int, error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
 	var issetUserId bool = false
-	var issetReqUserId bool = false
 	_, l, err = bthrift.Binary.ReadStructBegin(buf)
 	offset += l
 	if err != nil {
@@ -1547,7 +1546,6 @@ func (p *PublishListRequest) FastRead(buf []byte) (int, error) {
 				if err != nil {
 					goto ReadFieldError
 				}
-				issetReqUserId = true
 			} else {
 				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
 				offset += l
@@ -1577,11 +1575,6 @@ func (p *PublishListRequest) FastRead(buf []byte) (int, error) {
 
 	if !issetUserId {
 		fieldId = 1
-		goto RequiredFieldNotSetError
-	}
-
-	if !issetReqUserId {
-		fieldId = 2
 		goto RequiredFieldNotSetError
 	}
 	return offset, nil
@@ -1622,8 +1615,7 @@ func (p *PublishListRequest) FastReadField2(buf []byte) (int, error) {
 		return offset, err
 	} else {
 		offset += l
-
-		p.ReqUserId = v
+		p.ReqUserId = &v
 
 	}
 	return offset, nil
@@ -1669,10 +1661,12 @@ func (p *PublishListRequest) fastWriteField1(buf []byte, binaryWriter bthrift.Bi
 
 func (p *PublishListRequest) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "req_user_id", thrift.I64, 2)
-	offset += bthrift.Binary.WriteI64(buf[offset:], p.ReqUserId)
+	if p.IsSetReqUserId() {
+		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "req_user_id", thrift.I64, 2)
+		offset += bthrift.Binary.WriteI64(buf[offset:], *p.ReqUserId)
 
-	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+		offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	}
 	return offset
 }
 
@@ -1687,10 +1681,12 @@ func (p *PublishListRequest) field1Length() int {
 
 func (p *PublishListRequest) field2Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("req_user_id", thrift.I64, 2)
-	l += bthrift.Binary.I64Length(p.ReqUserId)
+	if p.IsSetReqUserId() {
+		l += bthrift.Binary.FieldBeginLength("req_user_id", thrift.I64, 2)
+		l += bthrift.Binary.I64Length(*p.ReqUserId)
 
-	l += bthrift.Binary.FieldEndLength()
+		l += bthrift.Binary.FieldEndLength()
+	}
 	return l
 }
 

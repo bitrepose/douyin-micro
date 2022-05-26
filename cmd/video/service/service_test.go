@@ -50,3 +50,20 @@ func TestFeedService(t *testing.T) {
 	}
 	klog.Info("Next Time: ", next_time)
 }
+
+func TestPublishList(t *testing.T) {
+	ReqId := int64(2)
+	req := &video.PublishListRequest{
+		UserId:    1,
+		ReqUserId: &ReqId,
+	}
+	dal.Init()
+	videos, err := NewPublishListService(context.Background()).PublishList(req)
+	if err != nil {
+		klog.Error(err)
+	}
+	for _, v := range videos {
+		klog.Info("Videos Author: ", v.Author)
+		klog.Info("Videos is_favorite: ", v.IsFavorite)
+	}
+}

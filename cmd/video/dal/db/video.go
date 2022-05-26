@@ -62,3 +62,12 @@ func FeedVideo(ctx context.Context, limit int64, latest_time *int64) ([]*Video, 
 
 	return res, next_time, nil
 }
+
+func PublishList(ctx context.Context, userId int64) ([]*Video, error) {
+	var pubList []*Video
+	err := DB.WithContext(ctx).Model(&Video{}).Where("user_id = ?", userId).Find(&pubList).Error
+	if err != nil {
+		return nil, err
+	}
+	return pubList, nil
+}

@@ -27,5 +27,18 @@ func TestFeedVideo(t *testing.T) {
 		klog.Info("Video Publish Time: ", v.CreatedAt)
 	}
 	klog.Info("Next Time: ", next_time)
+}
 
+func TestPublishList(t *testing.T) {
+	Init()
+	user := 3
+	klog.Info("Request user: ", user)
+	videos, err := PublishList(context.Background(), int64(user))
+	if err != nil {
+		klog.Error(err)
+	}
+	for _, v := range videos {
+		klog.Info("Video Author_id: ", v.UserId)
+		klog.Info("Video URL: ", v.PlayUrl)
+	}
 }
