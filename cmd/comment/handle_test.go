@@ -2,14 +2,17 @@ package main
 
 import (
 	"context"
-	"douyin-micro/cmd/video/dal/db"
+	"douyin-micro/cmd/comment/dal"
 	"douyin-micro/kitex_gen/comment"
 	"fmt"
 	"testing"
 )
 
 func TestHandle(t *testing.T) {
-	db.InitDB()
+	/*
+		can't tast the handle.go because kitex can't be leaded in windows and TecentServer
+	*/
+	dal.Init()
 	s := &CommentServiceImpl{}
 	text := string("bigrain")
 	creq := &comment.CommentActionRequest{
