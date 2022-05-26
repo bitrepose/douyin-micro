@@ -2,14 +2,14 @@ package main
 
 import (
 	"context"
-	"douyin-micro/cmd/video/dal"
+	"douyin-micro/cmd/video/dal/db"
 	"douyin-micro/kitex_gen/comment"
 	"fmt"
 	"testing"
 )
 
 func TestHandle(t *testing.T) {
-	dal.Init()
+	db.InitDB()
 	s := &CommentServiceImpl{}
 	text := string("bigrain")
 	creq := &comment.CommentActionRequest{

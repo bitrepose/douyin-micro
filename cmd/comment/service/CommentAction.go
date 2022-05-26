@@ -4,13 +4,10 @@ import (
 	"context"
 	"douyin-micro/cmd/comment/dal/db"
 	"douyin-micro/pkg/constants"
-	"fmt"
 )
 
 func PostComment(ctx context.Context, cmt *db.Comment) constants.PostCommentMessage {
-	fmt.Printf("\"1\": %v\n", "1")
 	err := db.CreateComment(ctx, cmt)
-	fmt.Printf("\"2\": %v\n", "2")
 	if err != nil {
 		return constants.PostCommentFailure
 	}
