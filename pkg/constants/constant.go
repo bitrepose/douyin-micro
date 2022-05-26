@@ -17,6 +17,7 @@ const (
 	UserServiceName              = "demouser"
 	MySQLDefaultDSN              = "root:SUDAcs647#SQL@tcp(139.196.145.51:3306)/douyin?parseTime=True&loc=Local"
 	EtcdAddress                  = "127.0.0.1:2379"
+	EtcdAddressByComment                  = "127.0.0.1:2380"
 	CPURateLimit         float64 = 80.0
 	DefaultLimit                 = 10
 	LogLevel                     = "info"
