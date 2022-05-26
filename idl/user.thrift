@@ -32,7 +32,7 @@ struct UserLoginResponse {
 
 struct MUserInfoRequest {
     1: required list<i64>     user_ids;      // 用户id
-    2: required i64           req_user_id;   // 发起请求的用户id
+    2: optional i64           req_user_id;   // 发起请求的用户id，考虑到游客，设为可选
 }
 
 struct MUserInfoResponse {

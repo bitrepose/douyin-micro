@@ -67,16 +67,6 @@ func DisFavorite(ctx context.Context, userId int64, videoId int64) error {
 	return err
 }
 
-type FavRes struct {
-	ID            int64
-	UserId        int64  `json:"user_id"`
-	PlayUrl       string `json:"play_url"`
-	CoverUrl      string `json:"cover_url"`
-	FavoriteCount int    `json:"favorite_count"`
-	CommentCount  int    `json:"comment_count"`
-	Title         string `json:"title"`
-}
-
 func FavoriteList(ctx context.Context, userId int64) ([]*Video, error) {
 	var favList []*Video
 	err := DB.WithContext(ctx).Table("video").Joins("inner join user_video as uv on video.id = uv.video_id").Where("uv.user_id = ?", userId).Find(&favList).Error
