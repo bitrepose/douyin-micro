@@ -2,18 +2,23 @@ package main
 
 import (
 	"context"
-	"douyin-micro/cmd/comment/dal/db"
-	"douyin-micro/cmd/comment/service"
+	"douyin-micro/cmd/video/dal"
+	"douyin-micro/kitex_gen/comment"
 	"fmt"
 	"testing"
 )
 
-func Test(t *testing.T) {
-	ct := &db.Comment{
-		VideoId: 2,
-		Text:    "nice",
-		UserId:  3,
+func TestHandle(t *testing.T) {
+	dal.Init()
+	s := &CommentServiceImpl{}
+	text := string("bigrain")
+	creq := &comment.CommentActionRequest{
+		UserId:      1,
+		VideoId:     1,
+		ActionType:  1,
+		CommentText: &text,
+		CommentId:   nil,
 	}
-	code := service.PostComment(context.Background(), ct)
-	fmt.Printf("code: %v\n", code)
+	cresp, _ := s.CommentAction(context.Background(), creq)
+	fmt.Println(cresp.StatusCode, cresp.StatusMsg, cresp.Comment)
 }

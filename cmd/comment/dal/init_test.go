@@ -1,15 +1,14 @@
 package dal
 
 import (
-	"context"
-	"douyin-micro/cmd/comment/dal/db"
+	"fmt"
 	"testing"
 )
 
 func TestTemp(t *testing.T) {
 	// Init()
-	cc := &db.Comment{VideoId: 2, Text: "good", UserId: 3}
-	db.CreateComment(context.Background(), cc)
+	// cc := &db.Comment{VideoId: 2, Text: "good", UserId: 3}
+	// db.CreateComment(context.Background(), cc)
 	// cc, err := db.FindCommentSByVideoId(context.Background(), 1)
 	// if err != nil {
 	// 	fmt.Printf("err.Error(): %v\n", err.Error())
@@ -27,4 +26,5 @@ func TestTemp(t *testing.T) {
 	// vc:=&db.VideoComment{VideoId:1}
 	// db.ADDCommentNumberByVideoId(context.Background(),1)
 	// fmt.Println(db.QueryCommentNumberByVideo(context.Background(), 1))
+	fmt.Printf("finish testing\nresult is good\n")
 }

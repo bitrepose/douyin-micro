@@ -7,6 +7,3 @@ import (
 func Init() {
 	db.InitDB()
 }
-func Temp() {
-	
-}
