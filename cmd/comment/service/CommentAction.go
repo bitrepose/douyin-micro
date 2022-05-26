@@ -14,10 +14,10 @@ func PostComment(ctx context.Context, cmt *db.Comment) constants.PostCommentMess
 	if err != nil {
 		return constants.PostCommentFailure
 	}
-	// err = db.ADDCommentNumberByVideoId(ctx,int64(cmt.VideoId))
-	// if err != nil {
-	// 	return constants.PostCommentFailure
-	// }
+	err = db.ADDCommentNumberByVideoId(ctx,int64(cmt.VideoId))
+	if err != nil {
+		return constants.PostCommentFailure
+	}
 	return constants.PostCommentSuccess
 }
 
