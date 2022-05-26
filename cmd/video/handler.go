@@ -14,6 +14,7 @@ type VideoServiceImpl struct{}
 func (s *VideoServiceImpl) Feed(ctx context.Context, req *video.FeedRequset) (resp *video.FeedResponse, err error) {
 	// TODO: Your code here...
 	resp = new(video.FeedResponse)
+
 	if (req.ReqUserId != nil && *req.ReqUserId == 0) || (req.LatestTime != nil && *req.LatestTime < 0) {
 		resp.StatusCode = errno.ParamErrCode
 		resp.StatusMsg = &errno.ParamErr.ErrMsg
@@ -60,6 +61,8 @@ func (s *VideoServiceImpl) PublishAction(ctx context.Context, req *video.Publish
 // PublishList implements the VideoServiceImpl interface.
 func (s *VideoServiceImpl) PublishList(ctx context.Context, req *video.PublishListRequest) (resp *video.PublishListResponse, err error) {
 	// TODO: Your code here...
+	resp = new(video.PublishListResponse)
+
 	if req.UserId == 0 || (req.ReqUserId != nil && *req.ReqUserId == 0) {
 		resp.StatusCode = errno.ParamErrCode
 		resp.StatusMsg = &errno.ParamErr.ErrMsg
@@ -74,7 +77,7 @@ func (s *VideoServiceImpl) PublishList(ctx context.Context, req *video.PublishLi
 	resp.StatusCode = errno.SuccessCode
 	resp.VideoList = videos
 
-	return
+	return resp, nil
 }
 
 // FavoriteAction implements the VideoServiceImpl interface.
@@ -98,6 +101,8 @@ func (s *VideoServiceImpl) FavoriteAction(ctx context.Context, req *video.Favori
 // FavoriteList implements the VideoServiceImpl interface.
 func (s *VideoServiceImpl) FavoriteList(ctx context.Context, req *video.FavoriteListRequest) (resp *video.FavoriteListResponse, err error) {
 	// TODO: Your code here...
+	resp = new(video.FavoriteListResponse)
+
 	if req.UserId == 0 || req.ReqUserId == 0 {
 		resp.StatusCode = errno.ParamErrCode
 		resp.StatusMsg = &errno.ParamErr.ErrMsg
@@ -111,5 +116,5 @@ func (s *VideoServiceImpl) FavoriteList(ctx context.Context, req *video.Favorite
 	}
 	resp.StatusCode = errno.SuccessCode
 	resp.VideoList = videos
-	return
+	return resp, nil
 }
