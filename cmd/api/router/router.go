@@ -2,12 +2,13 @@ package router
 
 import (
 	"douyin-micro/cmd/api/handler"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 func SetUpRouter() error {
-	r := gin.Default()
+	r := gin.New()
 	douyinGroup := r.Group("/douyin")
 	{
 		douyinGroup.GET("/feed", handler.Feed)
@@ -39,6 +40,8 @@ func SetUpRouter() error {
 			relationGroup.GET("/follower/list", handler.FollowerList)
 		}
 	}
-	err := r.Run(":9090")
-	return err
+	if err := http.ListenAndServe(":8080", r); err != nil {
+		return err
+	}
+	return nil
 }

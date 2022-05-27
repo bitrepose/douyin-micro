@@ -7,7 +7,6 @@ import (
 	"douyin-micro/kitex_gen/comment"
 	"douyin-micro/kitex_gen/user"
 	"douyin-micro/pkg/constants"
-	"time"
 )
 
 // CommentServiceImpl implements the last service interface defined in the IDL.
@@ -35,7 +34,7 @@ func (s *CommentServiceImpl) CommentAction(ctx context.Context, req *comment.Com
 				Id:         int64(tempComment.ID),
 				User:       tempUser,
 				Content:    tempComment.Text,
-				CreateDate: tempComment.CreatedAt.Format(time.RFC3339Nano),
+				CreateDate: tempComment.CreatedAt.String(),
 			},
 		}
 		return resp, nil
@@ -69,7 +68,7 @@ func (s *CommentServiceImpl) CommentList(ctx context.Context, req *comment.Comme
 				Id:         int64(comments[idx].ID),
 				User:       tempuser,
 				Content:    comments[idx].Text,
-				CreateDate: comments[idx].CreatedAt.Format(time.RFC3339Nano),
+				CreateDate: comments[idx].CreatedAt.String(),
 			}
 		}
 		resp.CommentList = res

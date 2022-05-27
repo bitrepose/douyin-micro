@@ -20,7 +20,6 @@ func initUserRpc() {
 	if err != nil {
 		panic(err)
 	}
-
 	c, err := userservice.NewClient(
 		constants.UserServiceName,
 		// client.WithMiddleware(middleware.CommonMiddleware),
