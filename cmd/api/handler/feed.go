@@ -7,6 +7,7 @@ import (
 )
 
 func Feed(c *gin.Context) {
-	last_time:=c.DefaultQuery("last_time",time.Now().String())
-	
+	last_time := c.DefaultQuery("last_time", time.Now().String())
+	token := c.DefaultQuery("token", "nothing...")
+
 }
