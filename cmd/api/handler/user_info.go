@@ -12,9 +12,11 @@ func UserInfo(c *gin.Context) {
 	var info UserInfoRequest
 	if err := c.ShouldBind(&info); err != nil {
 		sendBaseResp(c, errno.ConvertErr(err))
+		return
 	}
 	if info.UserId <= 0 || len(info.Token) == 0 {
 		sendBaseResp(c, errno.ParamErr)
+		return
 	}
 	//token 中获取
 	var userId int64
