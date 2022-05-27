@@ -1,8 +1,11 @@
 package rpc
 
 import (
+	"context"
+	"douyin-micro/kitex_gen/video"
 	"douyin-micro/kitex_gen/video/videoservice"
 	"douyin-micro/pkg/constants"
+	"douyin-micro/pkg/errno"
 	"douyin-micro/pkg/middleware"
 	"time"
 
@@ -35,4 +38,59 @@ func initVideoRpc() {
 		panic(err)
 	}
 	videoClient = c
+}
+
+func PublishAction(ctx context.Context, req *video.PublishActionRequest) error {
+	resp, err := videoClient.PublishAction(ctx, req)
+	if err != nil {
+		return err
+	}
+	if resp.StatusCode != errno.SuccessCode {
+		return errno.NewErrNo(int64(resp.StatusCode), *resp.StatusMsg)
+	}
+	return nil
+}
+
+func PublishList(ctx context.Context, req *video.PublishListRequest) (*video.PublishListResponse, error) {
+	resp, err := videoClient.PublishList(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != errno.SuccessCode {
+		return nil, errno.NewErrNo(int64(resp.StatusCode), *resp.StatusMsg)
+	}
+	return resp, nil
+}
+
+func FavoriteAction(ctx context.Context, req *video.FavoriteActionRequest) error {
+	resp, err := videoClient.FavoriteAction(ctx, req)
+	if err != nil {
+		return err
+	}
+	if resp.StatusCode != errno.SuccessCode {
+		return errno.NewErrNo(int64(resp.StatusCode), *resp.StatusMsg)
+	}
+	return nil
+}
+
+func FavoriteList(ctx context.Context, req *video.FavoriteListRequest) (*video.FavoriteListResponse, error) {
+	resp, err := videoClient.FavoriteList(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != errno.SuccessCode {
+		return nil, errno.NewErrNo(int64(resp.StatusCode), *resp.StatusMsg)
+	}
+	return resp, nil
+}
+
+func Feed(ctx context.Context, req *video.FeedRequset) (*video.FeedResponse, error) {
+	resp, err := videoClient.Feed(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != errno.SuccessCode {
+		return nil, errno.NewErrNo(int64(resp.StatusCode), *resp.StatusMsg)
+	}
+	return resp, nil
 }
