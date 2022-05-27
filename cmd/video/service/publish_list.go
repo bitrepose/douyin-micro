@@ -9,22 +9,20 @@ import (
 	"douyin-micro/kitex_gen/video"
 )
 
-const (
-	LIMIT = 30 // 单次返回最大视频数
-)
-
-type FeedService struct {
+type PublishListService struct {
 	ctx context.Context
 }
 
-func NewFeedService(ctx context.Context) *FeedService {
-	return &FeedService{ctx: ctx}
+func NewPublishListService(ctx context.Context) *PublishListService {
+	return &PublishListService{
+		ctx: ctx,
+	}
 }
 
-func (s *FeedService) FeedService(req *video.FeedRequset) ([]*video.Video, *int64, error) {
-	videoModels, next_time, err := db.FeedVideo(s.ctx, LIMIT, req.LatestTime)
+func (s *PublishListService) PublishList(req *video.PublishListRequest) ([]*video.Video, error) {
+	videoModels, err := db.PublishList(s.ctx, req.UserId)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 	userMap, err := rpc.MUserInfo(s.ctx, &user.MUserInfoRequest{
 		UserIds: pack.UserIds(videoModels),
@@ -33,7 +31,7 @@ func (s *FeedService) FeedService(req *video.FeedRequset) ([]*video.Video, *int6
 	if req.ReqUserId != nil {
 		favVideos, err := db.FavoriteIdList(s.ctx, *req.ReqUserId)
 		if err != nil {
-			return nil, nil, err
+			return nil, err
 		}
 		for _, v := range videos {
 			// 已点赞
@@ -42,6 +40,5 @@ func (s *FeedService) FeedService(req *video.FeedRequset) ([]*video.Video, *int6
 			}
 		}
 	}
-
-	return videos, &next_time, nil
+	return videos, nil
 }
