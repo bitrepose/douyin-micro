@@ -3,10 +3,10 @@ package service
 import (
 	"context"
 	"crypto/md5"
+	"douyin-micro/cmd/user/dal/db"
+	"douyin-micro/kitex_gen/user"
 	"fmt"
 	"io"
-	"douyin-micro/kitex_gen/user"
-	"douyin-micro/cmd/user/dal/db"
 )
 
 type UserRegisterService struct {
@@ -19,19 +19,21 @@ func NewUserRegisterService(ctx context.Context) *UserRegisterService {
 }
 
 // CreateUser create user info.
-func (s *UserRegisterService) UserRegister(req *user.UserRegisterRequest) error {
+func (s *UserRegisterService) UserRegister(req *user.UserRegisterRequest) (int64, error) {
 	h := md5.New()
 	_, err := io.WriteString(h, req.Password)
 	if err != nil {
-		return err
+		return 0, err
 	}
 	passWord := fmt.Sprintf("%x", h.Sum(nil))
 	fmt.Println(passWord)
-	return db.CreateUser(s.ctx, &db.User{
-		Name: req.Username,
-		Password: passWord,
-		FollowCount: 0,
+	err = db.CreateUser(s.ctx, &db.User{
+		Name:          req.Username,
+		Password:      passWord,
+		FollowCount:   0,
 		FollowerCount: 0,
-		IsFollow: false,
+		IsFollow:      false,
 	})
+	user, _ := db.FindUserByUsername(s.ctx, req.Username)
+	return int64(user.ID), err
 }

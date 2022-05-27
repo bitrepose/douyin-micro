@@ -1,9 +1,12 @@
 package rpc
 
 import (
+	"douyin-micro/kitex_gen/user"
 	"douyin-micro/kitex_gen/user/userservice"
 	"douyin-micro/pkg/constants"
+	"douyin-micro/pkg/errno"
 	"douyin-micro/pkg/middleware"
+	"github.com/gin-gonic/gin"
 	"time"
 
 	"github.com/cloudwego/kitex/client"
@@ -35,4 +38,89 @@ func initUserRpc() {
 		panic(err)
 	}
 	userClient = c
+}
+
+func Login(c *gin.Context, username string, password string) (int64, string, errno.ErrNo) {
+	var resp *user.UserLoginResponse
+	var err error
+	var token string
+	resp, err = userClient.UserLogin(c, &user.UserLoginRequest{Username: username, Password: password})
+	if err != nil {
+		return 0, "", errno.ConvertErr(err)
+	}
+	if resp.StatusCode != 0 {
+		return 0, "", errno.NewErrNo(int64(resp.StatusCode), *resp.StatusMsg)
+	}
+	// token 生成
+
+	return resp.UserId, token, errno.Success
+}
+
+func Register(c *gin.Context, username string, password string) (int64, string, errno.ErrNo) {
+	var resp *user.UserRegisterResponse
+	var err error
+	var token string
+	resp, err = userClient.UserRegister(c, &user.UserRegisterRequest{Username: username, Password: password})
+	if err != nil {
+		return 0, "", errno.ConvertErr(err)
+	}
+	if resp.StatusCode != 0 {
+		return 0, "", errno.NewErrNo(int64(resp.StatusCode), *resp.StatusMsg)
+	}
+	//token 生成
+
+	return resp.UserId, token, errno.Success
+}
+
+func UserInfo(c *gin.Context, userId int64, toUserId int64) (user.User, errno.ErrNo) {
+	var resp *user.MUserInfoResponse
+	var err error
+	request := &user.MUserInfoRequest{ReqUserId: &userId, UserIds: []int64{toUserId}}
+	resp, err = userClient.MUserInfo(c, request)
+	if err != nil {
+		return user.User{}, errno.ConvertErr(err)
+	}
+	if resp.StatusCode != 0 || len(resp.Users) == 0 {
+		return user.User{}, errno.NewErrNo(int64(resp.StatusCode), *resp.StatusMsg)
+	}
+	return *resp.Users[0], errno.Success
+}
+
+func RelationAction(c *gin.Context, request user.RelationActionRequest) errno.ErrNo {
+	var err error
+	var resp *user.RelationActionResponse
+	resp, err = userClient.RelationAction(c, &request)
+	if err != nil {
+		return errno.ConvertErr(err)
+	}
+	if resp.StatusCode != 0 {
+		return errno.NewErrNo(int64(resp.StatusCode), *resp.StatusMsg)
+	}
+	return errno.Success
+}
+
+func RelationFollowList(c *gin.Context, request user.RelationFollowListRequest) ([]*user.User, errno.ErrNo) {
+	var err error
+	var resp *user.RelationFollowListResponse
+	resp, err = userClient.RelationFollowList(c, &request)
+	if err != nil {
+		return []*user.User{}, errno.ConvertErr(err)
+	}
+	if resp.StatusCode != 0 {
+		return []*user.User{}, errno.NewErrNo(int64(resp.StatusCode), *resp.StatusMsg)
+	}
+	return resp.UserList, errno.Success
+}
+
+func RelationFollowerList(c *gin.Context, request user.RelationFollowerListRequest) ([]*user.User, errno.ErrNo) {
+	var err error
+	var resp *user.RelationFollowerListResponse
+	resp, err = userClient.RelationFollowerList(c, &request)
+	if err != nil {
+		return []*user.User{}, errno.ConvertErr(err)
+	}
+	if resp.StatusCode != 0 {
+		return []*user.User{}, errno.NewErrNo(int64(resp.StatusCode), *resp.StatusMsg)
+	}
+	return resp.UserList, errno.Success
 }

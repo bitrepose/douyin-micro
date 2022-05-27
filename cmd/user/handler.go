@@ -12,20 +12,84 @@ type UserServiceImpl struct{}
 
 // UserRegister implements the UserServiceImpl interface.
 func (s *UserServiceImpl) UserRegister(ctx context.Context, req *user.UserRegisterRequest) (resp *user.UserRegisterResponse, err error) {
-	// TODO: Your code here...
-	return
+	resp = new(user.UserRegisterResponse)
+	if len(req.Username) == 0 || len(req.Password) == 0 || len(req.Username) > 32 || len(req.Password) > 32 {
+		e := errno.ParamErr
+		convUserRegisterRequest(resp, int32(e.ErrCode), e.ErrMsg)
+		return resp, nil
+	}
+
+	_, err = service.NewUserRegisterService(ctx).UserRegister(req)
+	if err != nil {
+		e := errno.ServiceErr
+		convUserRegisterRequest(resp, int32(e.ErrCode), e.ErrMsg)
+		return resp, nil
+	}
+	e := errno.Success
+	convUserRegisterRequest(resp, int32(e.ErrCode), e.ErrMsg)
+	return resp, nil
+}
+
+//上个方法的自用函数
+func convUserRegisterRequest(resp *user.UserRegisterResponse, code int32, msg string) {
+	resp.StatusCode = code
+	resp.StatusMsg = &msg
 }
 
 // UserLogin implements the UserServiceImpl interface.
 func (s *UserServiceImpl) UserLogin(ctx context.Context, req *user.UserLoginRequest) (resp *user.UserLoginResponse, err error) {
-	// TODO: Your code here...
-	return
+	resp = new(user.UserLoginResponse)
+
+	if len(req.Username) == 0 || len(req.Password) == 0 || len(req.Username) > 32 || len(req.Password) > 32 {
+		e := errno.ParamErr
+		convUserLoginResponse(resp, int32(e.ErrCode), e.ErrMsg)
+		return resp, nil
+	}
+
+	uid, err := service.NewUserLoginService(ctx).UserLogin(req)
+	if err != nil {
+		e := errno.ServiceErr
+		convUserLoginResponse(resp, int32(e.ErrCode), e.ErrMsg)
+		return resp, nil
+	}
+	resp.UserId = uid
+	e := errno.Success
+	convUserLoginResponse(resp, int32(e.ErrCode), e.ErrMsg)
+	return resp, nil
+}
+
+//上个方法的自用函数
+func convUserLoginResponse(resp *user.UserLoginResponse, code int32, msg string) {
+	resp.StatusCode = code
+	resp.StatusMsg = &msg
 }
 
 // UserInfo implements the UserServiceImpl interface.
 func (s *UserServiceImpl) MUserInfo(ctx context.Context, req *user.MUserInfoRequest) (resp *user.MUserInfoResponse, err error) {
-	// TODO: Your code here...
-	return
+	resp = new(user.MUserInfoResponse)
+
+	if len(req.UserIds) == 0 {
+		e := errno.ParamErr
+		convMUserInfoRequest(resp, int32(e.ErrCode), e.ErrMsg)
+		return resp, nil
+	}
+
+	users, err := service.NewMUserInfoService(ctx).MUserInfo(req)
+	if err != nil {
+		e := errno.ServiceErr
+		convMUserInfoRequest(resp, int32(e.ErrCode), e.ErrMsg)
+		return resp, nil
+	}
+	e := errno.Success
+	resp.Users = users
+	convMUserInfoRequest(resp, int32(e.ErrCode), e.ErrMsg)
+	return resp, nil
+}
+
+//上个方法的自用函数
+func convMUserInfoRequest(resp *user.MUserInfoResponse, code int32, msg string) {
+	resp.StatusCode = code
+	resp.StatusMsg = &msg
 }
 
 // RelationAction implements the UserServiceImpl interface.

@@ -22,6 +22,7 @@ func (s *RelationFollowListService) RelationFollowList(req *user.RelationFollowL
 		//这里有异常 表示从follow表中查找用户id出错
 		return users, err
 	}
+	// 这个用户没有关注任何人
 	if followedIds == nil || len(*followedIds) == 0 {
 		return users, nil
 	}
