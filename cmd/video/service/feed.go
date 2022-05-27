@@ -26,9 +26,13 @@ func (s *FeedService) FeedService(req *video.FeedRequset) ([]*video.Video, *int6
 	if err != nil {
 		return nil, nil, err
 	}
+	uIds := pack.UserIds(videoModels)
 	userMap, err := rpc.MUserInfo(s.ctx, &user.MUserInfoRequest{
-		UserIds: pack.UserIds(videoModels),
+		UserIds: uIds,
 	})
+	if err != nil {
+		return nil, nil, err
+	}
 	videos := pack.Videos(videoModels, userMap)
 	if req.ReqUserId != nil {
 		favVideos, err := db.FavoriteIdList(s.ctx, *req.ReqUserId)

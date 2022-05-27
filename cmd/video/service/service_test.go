@@ -4,6 +4,7 @@ import (
 	"context"
 	"douyin-micro/cmd/video/dal"
 	"douyin-micro/cmd/video/minio"
+	"douyin-micro/cmd/video/rpc"
 	"douyin-micro/kitex_gen/video"
 	"os"
 	"testing"
@@ -36,11 +37,9 @@ func TestPublishAction(t *testing.T) {
 }
 
 func TestFeedService(t *testing.T) {
-	req := &video.FeedRequset{
-		LatestTime: nil,
-		ReqUserId:  nil,
-	}
+	req := &video.FeedRequset{}
 	dal.Init()
+	rpc.InitRPC()
 	videos, next_time, err := NewFeedService(context.Background()).FeedService(req)
 	if err != nil {
 		klog.Error(err)
@@ -58,12 +57,14 @@ func TestPublishList(t *testing.T) {
 		ReqUserId: &ReqId,
 	}
 	dal.Init()
+	rpc.InitRPC()
 	videos, err := NewPublishListService(context.Background()).PublishList(req)
 	if err != nil {
 		klog.Error(err)
 	}
 	for _, v := range videos {
-		klog.Info("Videos Author: ", v.Author)
+		klog.Info("Videos ", v)
+		klog.Info("Video Author: ", v.Author)
 		klog.Info("Videos is_favorite: ", v.IsFavorite)
 	}
 }
