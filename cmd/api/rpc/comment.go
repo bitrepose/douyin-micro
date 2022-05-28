@@ -1,8 +1,11 @@
 package rpc
 
 import (
+	"context"
+	"douyin-micro/kitex_gen/comment"
 	"douyin-micro/kitex_gen/comment/commentservice"
 	"douyin-micro/pkg/constants"
+	"douyin-micro/pkg/errno"
 	"douyin-micro/pkg/middleware"
 	"time"
 
@@ -35,4 +38,26 @@ func initCommentRpc() {
 		panic(err)
 	}
 	commentClient = c
+}
+
+func CommentList(ctx context.Context, req *comment.CommentListRequest) (*comment.CommentListResponse, error) {
+	resp, err := commentClient.CommentList(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != errno.SuccessCode {
+		return nil, errno.NewErrNo(int64(resp.StatusCode), *resp.StatusMsg)
+	}
+	return resp, nil
+}
+
+func CommentAction(ctx context.Context, req *comment.CommentActionRequest) error {
+	resp, err := commentClient.CommentAction(ctx, req)
+	if err != nil {
+		return err
+	}
+	if resp.StatusCode != errno.SuccessCode {
+		return errno.NewErrNo(int64(resp.StatusCode), *resp.StatusMsg)
+	}
+	return nil
 }
