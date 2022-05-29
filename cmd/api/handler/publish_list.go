@@ -16,17 +16,19 @@ func PublishList(c *gin.Context) {
 		Token  string `json:"token" form:"token"`
 	}
 	if err := c.BindQuery(&params); err != nil {
-		sendBaseResp(c, errno.ConvertErr(err))
+		SendBaseResp(c, errno.ConvertErr(err))
 	}
 	if params.UserId < 0 {
-		sendBaseResp(c, errno.ParamErr)
+		SendBaseResp(c, errno.ParamErr)
 	}
+	reqUid := c.GetInt64("uid")
 	req := video.PublishListRequest{
-		UserId: params.UserId,
+		UserId:    params.UserId,
+		ReqUserId: &reqUid,
 	}
 	resp, err := rpc.PublishList(context.Background(), &req)
 	if err != nil {
-		sendBaseResp(c, errno.ConvertErr(err))
+		SendBaseResp(c, errno.ConvertErr(err))
 	}
 
 	c.JSON(http.StatusOK, resp)

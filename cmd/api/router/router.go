@@ -2,6 +2,7 @@ package router
 
 import (
 	"douyin-micro/cmd/api/handler"
+	"douyin-micro/cmd/api/middleware"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -21,14 +22,14 @@ func SetUpRouter() error {
 		publishGroup := douyinGroup.Group("/publish")
 		{
 			publishGroup.POST("/action", handler.PublishAction)
-			publishGroup.GET("/list", handler.PublishList)
+			publishGroup.GET("/list", handler.PublishList, middleware.JwtAuth())
 		}
-		favoriteGroup := douyinGroup.Group("/favorite")
+		favoriteGroup := douyinGroup.Group("/favorite", middleware.JwtAuth())
 		{
 			favoriteGroup.POST("/action", handler.FavoriteAction)
 			favoriteGroup.GET("/list", handler.FavoriteList)
 		}
-		commentGroup := douyinGroup.Group("/comment")
+		commentGroup := douyinGroup.Group("/comment", middleware.JwtAuth())
 		{
 			commentGroup.POST("/action", handler.CommentAction)
 			commentGroup.GET("/list", handler.CommentList)

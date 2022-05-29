@@ -12,21 +12,21 @@ import (
 
 func CommentList(c *gin.Context) {
 	var params struct {
-		Token   string `json:"token" form:"token"`
-		VideoId int64  `json:"video_id" form:"video_id"`
+		VideoId int64 `json:"video_id" form:"video_id"`
 	}
 	if err := c.BindQuery(&params); err != nil {
-		sendBaseResp(c, errno.ConvertErr(err))
+		SendBaseResp(c, errno.ConvertErr(err))
 	}
 	if params.VideoId < 0 {
-		sendBaseResp(c, errno.ParamErr)
+		SendBaseResp(c, errno.ParamErr)
 	}
 	req := comment.CommentListRequest{
-		VideoId: params.VideoId,
+		VideoId:   params.VideoId,
+		ReqUserId: c.GetInt64("uid"),
 	}
 	resp, err := rpc.CommentList(context.Background(), &req)
 	if err != nil {
-		sendBaseResp(c, errno.ConvertErr(err))
+		SendBaseResp(c, errno.ConvertErr(err))
 	}
 
 	c.JSON(http.StatusOK, resp)

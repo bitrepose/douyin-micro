@@ -17,10 +17,10 @@ func FavoriteAction(c *gin.Context) {
 		ActionType int32  `json:"action_type" form:"action_type"`
 	}
 	if err := c.BindQuery(&params); err != nil {
-		sendBaseResp(c, errno.ConvertErr(err))
+		SendBaseResp(c, errno.ConvertErr(err))
 	}
 	if params.UserId < 0 || params.VideoId < 0 || params.ActionType != 1 && params.ActionType != 2 {
-		sendBaseResp(c, errno.ParamErr)
+		SendBaseResp(c, errno.ParamErr)
 	}
 	req := video.FavoriteActionRequest{
 		UserId:     params.UserId,
@@ -29,7 +29,7 @@ func FavoriteAction(c *gin.Context) {
 	}
 	err := rpc.FavoriteAction(context.Background(), &req)
 	if err != nil {
-		sendBaseResp(c, errno.ConvertErr(err))
+		SendBaseResp(c, errno.ConvertErr(err))
 	}
-	sendBaseResp(c, errno.Success)
+	SendBaseResp(c, errno.Success)
 }
