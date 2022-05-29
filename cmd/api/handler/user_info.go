@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"context"
 	"douyin-micro/cmd/api/rpc"
 	"douyin-micro/kitex_gen/user"
 	"douyin-micro/pkg/errno"
@@ -11,16 +12,17 @@ import (
 func UserInfo(c *gin.Context) {
 	var info UserInfoRequest
 	if err := c.ShouldBind(&info); err != nil {
-		sendBaseResp(c, errno.ConvertErr(err))
+		SendBaseResp(c, errno.ConvertErr(err))
 		return
 	}
-	if info.UserId <= 0 || len(info.Token) == 0 {
-		sendBaseResp(c, errno.ParamErr)
+	if info.UserId <= 0 {
+		SendBaseResp(c, errno.ParamErr)
 		return
 	}
 	//token 中获取
-	var userId int64
-	u, err := rpc.UserInfo(c, userId, info.UserId)
+	var userId = c.Keys["uid"].(int64)
+
+	u, err := rpc.UserInfo(context.Background(), userId, info.UserId)
 	c.JSON(http.StatusOK, InfoResponse{
 		Response{StatusCode: int(err.ErrCode), StatusMsg: err.ErrMsg},
 		u,
@@ -28,8 +30,7 @@ func UserInfo(c *gin.Context) {
 }
 
 type UserInfoRequest struct {
-	Token  string `json:"token"`
-	UserId int64  `json:"user_id"`
+	UserId int64 `json:"user_id"`
 }
 
 type InfoResponse struct {
