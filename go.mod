@@ -6,6 +6,7 @@ require (
 	github.com/apache/thrift v0.13.0
 	github.com/cloudwego/kitex v0.3.1
 	github.com/gofrs/uuid v4.2.0+incompatible
+	github.com/golang-jwt/jwt/v4 v4.4.1
 	github.com/minio/minio-go/v7 v7.0.26
 	github.com/opentracing/opentracing-go v1.2.0
 	go.uber.org/zap v1.17.0
@@ -62,7 +63,7 @@ require (
 	github.com/kitex-contrib/tracer-opentracing v0.0.3
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
-	github.com/tidwall/gjson v1.9.3 // indirect
+	github.com/tidwall/gjson v1.12.1 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/uber/jaeger-client-go v2.30.0+incompatible

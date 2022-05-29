@@ -1,8 +1,10 @@
 package handler
 
 import (
+	jwtutil "douyin-micro/cmd/api/jwt_util"
 	"douyin-micro/cmd/api/rpc"
 	"douyin-micro/pkg/errno"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,6 +18,13 @@ func UserLogin(c *gin.Context) {
 		sendBaseResp(c, errno.ParamErr)
 		return
 	}
-	id, token, err := rpc.Login(c, info.Username, info.Password)
-	sendUserResp(c, token, id, err)
+	id, err := rpc.Login(c, info.Username, info.Password)
+	if err != nil {
+		sendBaseResp(c, errno.ConvertErr(err))
+	}
+	tokenStr, err := jwtutil.CreateToken(id)
+	if err != nil {
+		sendBaseResp(c, errno.ConvertErr(err))
+	}
+	sendUserResp(c, tokenStr, id, err)
 }
