@@ -4,8 +4,9 @@ import (
 	"context"
 	"douyin-micro/cmd/api/rpc"
 	"douyin-micro/pkg/errno"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func UserRegister(c *gin.Context) {
@@ -24,8 +25,8 @@ func UserRegister(c *gin.Context) {
 }
 
 type LoginInfo struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
+	Username string `json:"username" form:"username"`
+	Password string `json:"password" form:"password"`
 }
 
 // 适用于 用户登陆与用户注册的相应
