@@ -24,8 +24,8 @@ func UserRegister(c *gin.Context) {
 }
 
 type LoginInfo struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
+	Username string `json:"username" form:"username"`
+	Password string `json:"password" form:"password"`
 }
 
 // 适用于 用户登陆与用户注册的相应

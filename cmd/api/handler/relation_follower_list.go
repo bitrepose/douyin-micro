@@ -27,7 +27,7 @@ func FollowerList(c *gin.Context) {
 }
 
 type FollowerRequest struct {
-	UserId int64 `json:"user_id"`
+	UserId int64 `json:"user_id" form:"user_id"`
 }
 
 type FollowerResponse struct {

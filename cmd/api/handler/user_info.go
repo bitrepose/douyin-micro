@@ -30,7 +30,7 @@ func UserInfo(c *gin.Context) {
 }
 
 type UserInfoRequest struct {
-	UserId int64 `json:"user_id"`
+	UserId int64 `json:"user_id" form:"user_id"`
 }
 
 type InfoResponse struct {
