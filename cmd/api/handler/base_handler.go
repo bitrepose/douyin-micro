@@ -12,7 +12,7 @@ type Response struct {
 	StatusMsg  string `json:"status_msg"`
 }
 
-func sendBaseResp(c *gin.Context, err errno.ErrNo) {
+func SendBaseResp(c *gin.Context, err errno.ErrNo) {
 	c.JSON(http.StatusOK, Response{
 		StatusCode: int(err.ErrCode),
 		StatusMsg:  err.ErrMsg,

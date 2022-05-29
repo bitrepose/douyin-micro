@@ -1,7 +1,9 @@
 package constants
 
+import "time"
+
 const (
-	VideoCommentName  			 = "video_comment"
+	VideoCommentName             = "video_comment"
 	CommentTableName             = "comment"
 	VideoTableName               = "video"
 	UserTableName                = "user"
@@ -17,7 +19,7 @@ const (
 	UserServiceName              = "demouser"
 	MySQLDefaultDSN              = "root:SUDAcs647#SQL@tcp(139.196.145.51:3306)/douyin?parseTime=True&loc=Local"
 	EtcdAddress                  = "127.0.0.1:2379"
-	EtcdAddressByComment                  = "127.0.0.1:2380"
+	EtcdAddressByComment         = "127.0.0.1:2380"
 	CPURateLimit         float64 = 80.0
 	DefaultLimit                 = 10
 	LogLevel                     = "info"
@@ -35,42 +37,62 @@ const (
 	MinioSecretAccessKey         = "pBwgu2sEFfoSh8bHFwTuJFaDCdHceo86"
 	MinioUseSSL                  = false
 	MinioVideoBucketName         = "douyin-video"
+	JwtSecret                    = "3Bde3BGEbYqtqyEUzW3ry8jKFcaPH17fRmTmqE7MDr05Lwj95uruRKrrkb44TJ4s"
+	// JwtTtl                       = 15 * 24 * time.Hour // 15天
+	JwtTtl    = time.Second * 15
+	JwtIssuer = "douyin-micro"
 )
 
 type PostCommentMessage int8
+
 const (
-	PostCommentSuccess PostCommentMessage = 0 
+	PostCommentSuccess PostCommentMessage = 0
 	PostCommentFailure PostCommentMessage = 1
 )
 
-func (c PostCommentMessage)String()string{
-	switch (c){
-	case PostCommentSuccess: return "Post comment successfully"
-	case PostCommentFailure: return "Fail to post comment"
-	default: return "Other Errors"
+func (c PostCommentMessage) String() string {
+	switch c {
+	case PostCommentSuccess:
+		return "Post comment successfully"
+	case PostCommentFailure:
+		return "Fail to post comment"
+	default:
+		return "Other Errors"
 	}
 }
+
 type DeleteCommentMessage int8
+
 const (
-	DeleteCommentSuccess DeleteCommentMessage = 0 
-	DeleteCommentFailure DeleteCommentMessage = 1 
+	DeleteCommentSuccess DeleteCommentMessage = 0
+	DeleteCommentFailure DeleteCommentMessage = 1
 )
-func (c DeleteCommentMessage)String()string {
-	switch(c){
-	case DeleteCommentSuccess: return "Delete comment successfully"
-	case DeleteCommentFailure: return "Fail to delete comment"
-	default: return "Other Errors"
+
+func (c DeleteCommentMessage) String() string {
+	switch c {
+	case DeleteCommentSuccess:
+		return "Delete comment successfully"
+	case DeleteCommentFailure:
+		return "Fail to delete comment"
+	default:
+		return "Other Errors"
 	}
 }
+
 type GetCommentListMessage int32
+
 const (
 	GetCommentListSuccess GetCommentListMessage = 0
-	GetCommentListFailure GetCommentListMessage =1
+	GetCommentListFailure GetCommentListMessage = 1
 )
-func (c GetCommentListMessage)String()string{
-	switch(c){
-	case GetCommentListSuccess: return "Get Comment List Successfully"
-	case GetCommentListFailure: return "Fail to get Comment List"
-	default : return "Other errors"
+
+func (c GetCommentListMessage) String() string {
+	switch c {
+	case GetCommentListSuccess:
+		return "Get Comment List Successfully"
+	case GetCommentListFailure:
+		return "Fail to get Comment List"
+	default:
+		return "Other errors"
 	}
 }

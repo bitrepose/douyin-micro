@@ -1,13 +1,15 @@
 package rpc
 
 import (
+	"context"
 	"douyin-micro/kitex_gen/user"
 	"douyin-micro/kitex_gen/user/userservice"
 	"douyin-micro/pkg/constants"
 	"douyin-micro/pkg/errno"
 	"douyin-micro/pkg/middleware"
-	"github.com/gin-gonic/gin"
 	"time"
+
+	"github.com/gin-gonic/gin"
 
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/retry"
@@ -40,20 +42,18 @@ func initUserRpc() {
 	userClient = c
 }
 
-func Login(c *gin.Context, username string, password string) (int64, string, errno.ErrNo) {
+func Login(c context.Context, username string, password string) (int64, error) {
 	var resp *user.UserLoginResponse
 	var err error
-	var token string
 	resp, err = userClient.UserLogin(c, &user.UserLoginRequest{Username: username, Password: password})
 	if err != nil {
-		return 0, "", errno.ConvertErr(err)
+		return 0, errno.ConvertErr(err)
 	}
 	if resp.StatusCode != 0 {
-		return 0, "", errno.NewErrNo(int64(resp.StatusCode), *resp.StatusMsg)
+		return 0, errno.NewErrNo(int64(resp.StatusCode), *resp.StatusMsg)
 	}
-	// token 生成
 
-	return resp.UserId, token, errno.Success
+	return resp.UserId, nil
 }
 
 func Register(c *gin.Context, username string, password string) (int64, string, errno.ErrNo) {
