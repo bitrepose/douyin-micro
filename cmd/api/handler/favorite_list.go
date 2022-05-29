@@ -16,17 +16,18 @@ func FavoriteList(c *gin.Context) {
 		Token  string `json:"token" form:"token"`
 	}
 	if err := c.BindQuery(&params); err != nil {
-		sendBaseResp(c, errno.ConvertErr(err))
+		SendBaseResp(c, errno.ConvertErr(err))
 	}
 	if params.UserId < 0 {
-		sendBaseResp(c, errno.ParamErr)
+		SendBaseResp(c, errno.ParamErr)
 	}
 	req := video.FavoriteListRequest{
-		UserId: params.UserId,
+		UserId:    params.UserId,
+		ReqUserId: c.GetInt64("uid"),
 	}
 	resp, err := rpc.FavoriteList(context.Background(), &req)
 	if err != nil {
-		sendBaseResp(c, errno.ConvertErr(err))
+		SendBaseResp(c, errno.ConvertErr(err))
 	}
 
 	c.JSON(http.StatusOK, resp)
