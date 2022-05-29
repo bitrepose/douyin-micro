@@ -33,7 +33,6 @@ func JwtAuth() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-
 		// 通过校验
 		c.Set("uid", uid)
 	}

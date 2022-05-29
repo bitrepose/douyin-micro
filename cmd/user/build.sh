@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-RUN_NAME="user_service"
+RUN_NAME="douyin-user"
 
 mkdir -p output/bin
 cp script/* output/

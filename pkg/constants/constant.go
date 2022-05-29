@@ -18,8 +18,7 @@ const (
 	CommentServiceName           = "democomment"
 	UserServiceName              = "demouser"
 	MySQLDefaultDSN              = "root:SUDAcs647#SQL@tcp(139.196.145.51:3306)/douyin?parseTime=True&loc=Local"
-	EtcdAddress                  = "127.0.0.1:2379"
-	EtcdAddressByComment         = "127.0.0.1:2380"
+	EtcdAddress                  = "139.196.145.51:2379"
 	CPURateLimit         float64 = 80.0
 	DefaultLimit                 = 10
 	LogLevel                     = "info"
@@ -38,8 +37,8 @@ const (
 	MinioUseSSL                  = false
 	MinioVideoBucketName         = "douyin-video"
 	JwtSecret                    = "3Bde3BGEbYqtqyEUzW3ry8jKFcaPH17fRmTmqE7MDr05Lwj95uruRKrrkb44TJ4s"
-	// JwtTtl                       = 15 * 24 * time.Hour // 15天
-	JwtTtl    = time.Second * 15
+	JwtTtl                       = 15 * 24 * time.Hour // 15天
+	// JwtTtl    = time.Second * 15
 	JwtIssuer = "douyin-micro"
 )
 

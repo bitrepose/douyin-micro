@@ -13,7 +13,7 @@ func Init() {
 }
 
 func main() {
-	// Init()
+	Init()
 
 	err := router.SetUpRouter()
 	if err != nil {

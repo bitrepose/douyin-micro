@@ -7,6 +7,8 @@ import (
 	"douyin-micro/cmd/video/rpc"
 	"douyin-micro/kitex_gen/user"
 	"douyin-micro/kitex_gen/video"
+
+	"github.com/cloudwego/kitex/pkg/klog"
 )
 
 const (
@@ -27,6 +29,7 @@ func (s *FeedService) FeedService(req *video.FeedRequset) ([]*video.Video, *int6
 		return nil, nil, err
 	}
 	uIds := pack.UserIds(videoModels)
+	klog.Info(uIds)
 	userMap, err := rpc.MUserInfo(s.ctx, &user.MUserInfoRequest{
 		UserIds: uIds,
 	})

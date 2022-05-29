@@ -17,7 +17,7 @@ func SetUpRouter() error {
 		{
 			userGroup.POST(("/register/"), handler.UserRegister)
 			userGroup.POST("/login/", handler.UserLogin)
-			userGroup.GET("/", handler.UserInfo)
+			userGroup.GET("/", middleware.JwtAuth(), handler.UserInfo)
 		}
 		publishGroup := douyinGroup.Group("/publish")
 		{

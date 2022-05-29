@@ -5,8 +5,10 @@ import (
 	"douyin-micro/cmd/api/rpc"
 	"douyin-micro/kitex_gen/user"
 	"douyin-micro/pkg/errno"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/gin-gonic/gin"
 )
 
 func UserInfo(c *gin.Context) {
@@ -20,8 +22,8 @@ func UserInfo(c *gin.Context) {
 		return
 	}
 	//token 中获取
-	var userId = c.Keys["uid"].(int64)
-
+	userId := c.GetInt64("uid")
+	klog.Info(userId)
 	u, err := rpc.UserInfo(context.Background(), userId, info.UserId)
 	c.JSON(http.StatusOK, InfoResponse{
 		Response{StatusCode: int(err.ErrCode), StatusMsg: err.ErrMsg},

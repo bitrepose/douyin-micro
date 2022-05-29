@@ -2,6 +2,7 @@ package main
 
 import (
 	"douyin-micro/cmd/video/dal"
+	"douyin-micro/cmd/video/rpc"
 	video "douyin-micro/kitex_gen/video/videoservice"
 	"douyin-micro/pkg/constants"
 	"douyin-micro/pkg/middleware"
@@ -18,6 +19,7 @@ import (
 func Init() {
 	dal.Init()
 	tracer2.InitJaeger(constants.VideoServiceName)
+	rpc.InitRPC()
 }
 
 func main() {

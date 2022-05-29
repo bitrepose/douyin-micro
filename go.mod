@@ -52,7 +52,7 @@ require (
 )
 
 require (
-	github.com/bytedance/gopkg v0.0.0-20220413063733-65bf48ffb3a7 // indirect
+	github.com/bytedance/gopkg v0.0.0-20220519031347-b9c1c36b51a6 // indirect
 	github.com/choleraehyq/pid v0.0.13 // indirect
 	github.com/cloudwego/netpoll v0.2.2 // indirect
 	github.com/cloudwego/thriftgo v0.1.2 // indirect

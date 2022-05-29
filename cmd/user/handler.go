@@ -19,13 +19,14 @@ func (s *UserServiceImpl) UserRegister(ctx context.Context, req *user.UserRegist
 		return resp, nil
 	}
 
-	_, err = service.NewUserRegisterService(ctx).UserRegister(req)
+	uid, err := service.NewUserRegisterService(ctx).UserRegister(req)
 	if err != nil {
 		e := errno.ServiceErr
 		convUserRegisterRequest(resp, int32(e.ErrCode), e.ErrMsg)
 		return resp, nil
 	}
 	e := errno.Success
+	resp.UserId = uid
 	convUserRegisterRequest(resp, int32(e.ErrCode), e.ErrMsg)
 	return resp, nil
 }

@@ -1,9 +1,10 @@
 package main
 
 import (
-	"douyin-micro/cmd/video/dal"
+	"douyin-micro/cmd/user/dal"
 	user "douyin-micro/kitex_gen/user/userservice"
 	"douyin-micro/pkg/constants"
+	"douyin-micro/pkg/middleware"
 	tracer2 "douyin-micro/pkg/tracer"
 	"net"
 
@@ -31,8 +32,8 @@ func main() {
 	Init()
 	svr := user.NewServer(new(UserServiceImpl),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: constants.UserServiceName}), // server name
-		// server.WithMiddleware(middleware.CommonMiddleware),                                             // middleware
-		// server.WithMiddleware(middleware.ServerMiddleware),
+		server.WithMiddleware(middleware.CommonMiddleware),                                             // middleware
+		server.WithMiddleware(middleware.ServerMiddleware),
 		server.WithServiceAddr(addr),                                       // address
 		server.WithLimit(&limit.Option{MaxConnections: 1000, MaxQPS: 100}), // limit
 		server.WithMuxTransport(),                                          // Multiplex

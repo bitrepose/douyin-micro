@@ -2,9 +2,9 @@ package service
 
 import (
 	"context"
-	"douyin-micro/kitex_gen/user"
 	"douyin-micro/cmd/user/dal/db"
 	"douyin-micro/cmd/user/pack"
+	"douyin-micro/kitex_gen/user"
 )
 
 type MUserInfoService struct {
@@ -23,14 +23,17 @@ func (s *MUserInfoService) MUserInfo(req *user.MUserInfoRequest) ([]*user.User, 
 	}
 	var users = []*user.User{}
 	for _, tempUser := range *modelUsers {
-		tempUser.IsFollow, err = db.Followed(s.ctx, *req.ReqUserId, tempUser.ID)
-		//if err!=nil && !errors.As(err,&gorm.ErrRecordNotFound) {
-		//	return nil,err
-		//}
-		// ?2. 如果有异常,说明没有关注 就让他为false
-		if err != nil {
-			tempUser.IsFollow = false
+		if req.ReqUserId != nil {
+			tempUser.IsFollow, err = db.Followed(s.ctx, *req.ReqUserId, tempUser.ID)
+			//if err!=nil && !errors.As(err,&gorm.ErrRecordNotFound) {
+			//	return nil,err
+			//}
+			// ?2. 如果有异常,说明没有关注 就让他为false
+			if err != nil {
+				tempUser.IsFollow = false
+			}
 		}
+
 		users = append(users, pack.ConvUser(tempUser))
 	}
 	return users, nil

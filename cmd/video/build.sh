@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-RUN_NAME="douyin-user"
+RUN_NAME="douyin-video"
 
 mkdir -p output/bin
 cp script/* output/

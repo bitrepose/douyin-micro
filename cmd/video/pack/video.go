@@ -39,15 +39,17 @@ func UserIds(ms []*db.Video) []int64 {
 	if len(ms) == 0 {
 		return []int64{}
 	}
-	uIds := make([]int64, len(ms))
 	uIdMap := make(map[int64]any)
 	for _, m := range ms {
 		if m != nil {
 			uIdMap[m.UserId] = struct{}{}
 		}
 	}
+	uIds := make([]int64, len(uIdMap))
+	i := 0
 	for uId := range uIdMap {
-		uIds = append(uIds, uId)
+		uIds[i] = uId
+		i++
 	}
 	return uIds
 }

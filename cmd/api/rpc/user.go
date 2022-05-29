@@ -2,17 +2,19 @@ package rpc
 
 import (
 	"context"
-	"douyin-micro/cmd/api/jwt_util"
+	jwtutil "douyin-micro/cmd/api/jwt_util"
 	"douyin-micro/kitex_gen/user"
 	"douyin-micro/kitex_gen/user/userservice"
 	"douyin-micro/pkg/constants"
 	"douyin-micro/pkg/errno"
 	"douyin-micro/pkg/middleware"
+	"time"
+
 	"github.com/cloudwego/kitex/client"
+	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/retry"
 	etcd "github.com/kitex-contrib/registry-etcd"
 	trace "github.com/kitex-contrib/tracer-opentracing"
-	"time"
 )
 
 var userClient userservice.Client
@@ -73,6 +75,7 @@ func Register(c context.Context, username string, password string) (int64, strin
 }
 
 func UserInfo(c context.Context, userId int64, toUserId int64) (user.User, errno.ErrNo) {
+	klog.Info("rpc...")
 	var resp *user.MUserInfoResponse
 	var err error
 	request := &user.MUserInfoRequest{ReqUserId: &userId, UserIds: []int64{toUserId}}
